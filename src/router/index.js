@@ -44,6 +44,11 @@ export default new Router({
     path:'/jzqmsg',
     name:'jzqmsg',
     component:_import('jzqmsg/jzqmsg')
+  },
+  {
+    path:'/jzqdetails',
+    name:'jzqdetails',
+    component:_import('jzqDetails/jzqDetails')
   }
 ]
 })

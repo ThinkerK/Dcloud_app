@@ -16,8 +16,8 @@
                         <div>灯杆号：{{item.dgh}}</div>
                     </div>
                     <div v-if= "nowIndex == 0">
-                        <div class="flex_between fontsm padding_tb font-gray">灯杆管理器地址：{{item.zcbh}} </div>
-                        <div class="flex_between fontsm font-gray">用电管理器地址：{{item.zcbh}} </div>
+                        <div class="flex_between fontsm padding_tb font-gray">灯杆管理器地址：{{item.zcbhDgglq}} </div>
+                        <div class="flex_between fontsm font-gray">单灯控制器地址：{{item.zcbh}} </div>
                     </div>
                     <div v-if= "nowIndex == 1">
                         <div class="flex_between fontsm padding_tb font-gray">单灯控制器地址：{{item.ddkzqId}} </div>
