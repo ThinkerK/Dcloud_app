@@ -5,6 +5,8 @@ const getters = {
     quName: state => state.address.quName,      //区的名称
     loadingSwitch : state => state.loading.loadingSwitch,  //loading开关
     luIndex: state => state.address.luIndex,    //(街道下标)
+    token: state => state.user.token,
+    userInfo: state => state.user.userInfo,
 }
 
 export default getters

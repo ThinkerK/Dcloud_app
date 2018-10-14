@@ -7,7 +7,7 @@
         </div>
         <div class="con-list-sm padding">
             <light-cell lfCon = "节点参数"> <distribute slot="other"></distribute> </light-cell>
-            <light-cell v-for = "(item,index) in portOptions" msgIcon = "true" :key="index" :lfCon = "item.lj" :mdCon="item.wl" :rtCon = "item.state == 1?'有效':'无效'"></light-cell>   
+            <light-cell v-for = "(item,index) in portOptions" msgIcon = "true" :key="index" :lfCon = "item.lj" :mdCon="item.wl" :blue = "item.state == 1?true:false" :rtCon = "item.state == 1?'有效':'无效'"></light-cell>   
         </div>
         <div class="con-list-sm padding">
             <light-cell lfCon = "分组参数"> <distribute slot="other"></distribute> </light-cell>
@@ -31,6 +31,8 @@ import lightCell from '@/components/common/lightCell'
 import iptApen from '@/components/common/iptApen'
 import lightOffset from '@/components/common/lightOffset'
 import distribute from '@/components/common/distribute'
+import Bus from "@/config/bus.js";
+
 export default {
   data () {
     return {
@@ -45,6 +47,7 @@ export default {
         onOffset:22,    //开灯偏移量range
         offValue:'提前',   //关灯偏移量radio
         offOffset:20,    //关灯偏移量range
+        pole:''// 灯杆信息
     }
   },
   methods:{
@@ -59,7 +62,11 @@ export default {
     },
     getOffOffset(value){
         this.offOffset = value
-    }
+    },
+    setPoleMsg(pole){  //获取灯杆信息
+        this.msgList[0].con = pole.dgmc
+        this.msgList[1].con = pole.dgh
+    },
   },
   components:{
       headTop,
@@ -67,7 +74,15 @@ export default {
       iptApen,
       lightOffset,
       distribute
-  }
+  },
+  created() {
+    this.pole = this.$route.query.pole
+    this.setPoleMsg(this.pole)
+  },
+  beforeDestroy() {
+      Bus.$emit('paramMsg',this.pole)
+      Bus.$off('paramMsg')
+  },
 }
 </script>
 

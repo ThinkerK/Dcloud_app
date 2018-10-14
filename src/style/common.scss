@@ -198,3 +198,17 @@ input::-webkit-input-placeholder {
     overflow-y: auto;
     overflow-x: hidden;
 }
+
+.f-btn{
+    background:linear-gradient(150deg,rgba(22,154,255,1),rgba(0,112,198,1));
+    border-radius:0.1rem;
+    flex: 1;
+    margin-right:0.25rem;
+}
+
+.zc-box-md{
+    width: 5.5rem;
+}
+.zc-box-md div{
+    flex: 1
+}

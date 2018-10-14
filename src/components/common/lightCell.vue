@@ -1,16 +1,19 @@
 <template>
   <div class="light-cell flex_between padding_tb border">
-    <div class = "left w55 flex_between">
+    <div class = "left flex_between">
         <div>
             <i class="msgIcon" v-if = "msgIcon"></i>
-            <span>{{lfCon}}</span>     
+            <span class="tit">{{lfCon}}</span>     
         </div>
-        <div>
+        <div style="margin-left: 0.2rem" v-if = "mdCon">
             <span>{{mdCon}}</span>
         </div>
+        <slot name = "zc-box"></slot>
     </div>
+    <!-- <slot name = "zc-box"></slot> -->
     <div class = "right">
-        <span>{{rtCon}}</span>
+        <span :class="[blue?'font-blue':'font-gray']">{{rtCon}}</span>
+        <span v-if = "zcCon" class="zc-box">{{zcCon}}</span>
         <slot name = "other"></slot>
     </div>
   </div>
@@ -22,7 +25,7 @@ export default {
     return {
     }
   },
-  props:['lfCon','rtCon','mdCon','msgIcon']
+  props:['lfCon','rtCon','mdCon','msgIcon','zcCon','blue']
 }
 </script>
 
@@ -37,5 +40,14 @@ export default {
     @include bg('../../images/common/shuju.png')
     vertical-align: middle;
     margin-right:0.2rem;
+}
+.zc-box{
+    display: inline-block;
+    margin-left: 0.5rem
+}
+.tit{
+    display: inline-block;
+    min-width: 1.7rem;
+    text-align: left
 }
 </style>

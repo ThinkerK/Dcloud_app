@@ -9,20 +9,20 @@
             <li v-for = "(item,index) in titList" @click = "titClick(index)" :class = "[nowIndex == index?'active':'']">{{item}}</li>
         </ul>
         <div class="scroll-box" style="flex: 1">
-                <div class="con-list-sm padding padding_tb flex_between" v-for="(item,index) in poleArr[nowIndex]" @click = "goDeviceMsg(item.poleId)">
+                <div class="con-list-sm padding padding_tb flex_between" v-for="(item,index) in poleArr[nowIndex]" @click = "gojzqMsg(item)">
                         <div class="con-middle">
                             <div class="flex_between">
-                                <div>{{item.dgmc}}</div>
-                                <div>{{item.dgh}}</div>
+                                <div class="ellipsis">{{item.jzkzqmc}}</div>
+                                <div class="ellipsis">{{item.zcbh}}</div>
                             </div>
-                            <div class="flex_between fontsm padding_tb font-gray">供电台区{{item.zcbh}} </div>
+                            <div class="flex_between fontsm padding_tb font-gray">供电台区:{{item.ldbmc}} </div>
                         </div>
                         <!-- <div class="con-right" :class="item.yxxbz == 1?'font-blue':'font-gray'">{{item.yxxbz == 1?'有效':'无效'}}</div> -->
                     </div>
                     <div class="con-list-sm padding padding_tb font-gray" v-if ="poleArr[nowIndex].length == 0">没有任何数据</div>
         </div>
     </div>
-    <select-all :popupSelect = "popupSelect" @hide = "selectHide" :poleArr = "poleArr"></select-all>
+    <select-all :popupSelect = "popupSelect" @hide = "selectHide" :poleArr = "poleArr[nowIndex]"></select-all>
     <mt-popup v-model="popupVisible" position="bottom" class="mint-popup">
         <mt-picker :slots="areaSlot" @change="AddressChange" valueKey = "xzqhmc" :showToolbar="true" :visible-item-count="5" ref="genderPicker">
             <div class="flex_between padding padding_tb">
@@ -99,13 +99,13 @@ export default {
     selectHide(val){  //控制多选页的显示隐藏
         this.popupSelect = val
     },
-    goJzqMsg(poleId){  //跳转到详细息
+    gojzqMsg(pole){  //跳转到详细息
         this.$router.push({
-            // path:'/deviecmsg',
-            // name:'devicemsg',
-            // query: { 
-            //     poleId:poleId
-            // }
+            path:'/jzqdetails',
+            name:'jzqdetails',
+            query: { 
+                pole:pole
+            }
         })
     },
     getJzqxq(values){
@@ -114,7 +114,7 @@ export default {
         data.sblx = 0;
         data.xzqhQx = values.xzqh;
         api.getJzqDdxq(data).then(function(res){
-            // console.log(res)
+            _this.poleArr = [res.data,[]]
         })
     },
     setAddress(){

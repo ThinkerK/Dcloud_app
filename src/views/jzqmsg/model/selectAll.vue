@@ -1,35 +1,39 @@
 <template>
     <mt-popup v-model="popupSelect" position="bottom">
-        <head-top headTitle = "单灯信息"  noneIcon = "true">
+        <head-top headTitle = "集中器信息"  noneIcon = "true">
             <div slot="save" @click = "hide">取消</div>
         </head-top>
-        <div class="section scroll-box">
-            <div class="con-list-sm padding padding_tb flex_between" v-for="(item,index) in poleArr[0]">
-                <div class="label"  @click="goCheck($event)"></div>
-                <div class='con-left check checkAll' @click = "chuandi($event)">
-                    <mt-checklist v-model="checkedArr" :options="[item]"></mt-checklist>
-                </div>
-                <div class="con-middle">
-                    <div class="flex_between">
-                        <div>{{item.name}}</div>
-                        <div>灯杆号：{{item.poleId}}</div>
+        <div class="section scroll-box" id="scrollboxC">
+            <div id="scrollconC">
+                <div class="con-list-sm padding padding_tb flex_between" v-for="(item,index) in poleArr" v-if="index<showIndex">
+                    <div class="label"  @click="goCheck($event)"></div>
+                    <div class='con-left check checkAll' @click = "chuandi($event)">
+                        <mt-checklist v-model="checkedArr" :options="[item]"></mt-checklist>
                     </div>
-                    <div class="flex_between fontsm padding_tb font-gray">灯杆管理器地址：{{item.dgglq}} </div>
-                    <div class="flex_between fontsm font-gray">用电管理器地址：{{item.ydglq}} </div>
+                    <div class="con-middle">
+                        <div class="flex_between">
+                            <div class="ellipsis">{{item.jzkzqmc}}</div>
+                            <div class="ellipsis">{{item.zcbh}}</div>
+                        </div>
+                        <div class="flex_between fontsm padding_tb font-gray">供电台区:{{item.ldbmc}} </div>
+                    </div>
                 </div>
-                <div class="con-right" :class="item.state == 1?'font-blue':'font-gray'">{{item.state == 1?'有效':'无效'}}</div>
             </div>
+            <div class="con-list-sm padding padding_tb font-gray" v-if ="poleArr.length == 0">没有任何数据</div>
         </div>   
         <footer class="padding padding_tb">
             <div class="flex_between check">
-                <mt-checklist v-model="allFlag" :options="['全选']"></mt-checklist>
+                <div class="allchecked" @click = "allClick($event)"></div>
+                <div @click = 'allcd($event)'>
+                    <mt-checklist v-model="allFlag" :options="['全选']"></mt-checklist>
+                </div>
                 <span class = "font-deepgray">选中的设备数 {{checkedArr.length}}</span>
             </div>
             <div class="flex_between padding_tb">
-                <div class="f-btn padding_tb">数据召测</div>
+                <div class="f-btn padding_tb" @click = "ToLink('jzqdstatesurver')">数据召测</div>
                 <div class="f-btn padding_tb" @click = "lightOn">设备开灯</div>
                 <div class="f-btn padding_tb" @click = "lightOff">设备关灯</div>
-                <div class="f-btn padding_tb" @click = 'timeCheck'>设备对时</div>
+                <div class="f-btn padding_tb" @click = "ToLink('jzqtimecheck')">设备对时</div>
             </div>
         </footer> 
     </mt-popup>
@@ -38,23 +42,62 @@
 <script>
 import { Popup,MessageBox,Toast } from 'mint-ui'
 import headTop from '@/components/header/mainHeader'
+import listItem from './listItem'
 export default {
   data () {
     return {
         checkedArr:[],
-        allFlag:[]
+        allFlag:[],
+        showIndex:7
     }
   },
-  props:['popupSelect','poleArr','selectFlag'],
+  props:['popupSelect','poleArr','selectFlag','nowIndex'],
   components:{
+    listItem,
     headTop
   },
   methods:{
-    chuandi(e){
+    ToLink(url,kzlx){   //页面跳转
+        if(kzlx == undefined){
+            kzlx == 0
+        }
+        if(this.checkedArr.length>0){
+            this.$router.push({
+                path:'/'+url,
+                name:url,
+                query:{
+                    poleArr:this.checkedArr,
+                    kzlx:kzlx
+                }
+            })
+        }else{
+            Toast('请选择')
+        }
+    },
+    onScroll(){
+        let scrollbox = document.querySelector('#scrollboxC')
+        if(document.querySelector('#scrollconC').clientHeight < (document.querySelector('#scrollboxC').clientHeight+scrollbox.scrollTop)){
+            this.showIndex += 6
+        }
+    },
+    chuandi(e){  //点击传递
         e.currentTarget.getElementsByClassName('mint-checklist-label')[0].click()
+    },
+    allcd(e){  //点击传递
+        e.currentTarget.getElementsByClassName('mint-checklist-label')[0].click()
+    },
+    allClick($event){  //点击传递
+        $event.path[1].children[1].click()
+        if(this.allFlag.length ==0){ 
+            this.checkedArr = this.poleArr
+        }else{
+            this.checkedArr = []
+        }
     },
     hide(){ //关闭多选页
         this.$emit('hide', false)
+        this.checkedArr = []
+        this.allFlag = []
     },
     goCheck($event){
         $event.path[1].children[1].click()
@@ -67,7 +110,7 @@ export default {
             })
             .then(action => { 
                 if (action == 'confirm') {
-                    Toast('开灯成功')
+                    this.ToLink('jzqkgd',1)
                 }
             })
         }else{
@@ -83,7 +126,7 @@ export default {
             })
             .then(action => { 
                 if (action == 'confirm') {
-                    Toast('关灯成功')
+                    this.ToLink('jzqkgd',0)
                 }
             })
         }else{
@@ -98,25 +141,17 @@ export default {
             })
             .then(action => { 
                 if (action == 'confirm') {
-                    Toast('对时成功')
+                    Toast('对时失败')
                 }
             })
         }else(Toast('请选择需要对时的设备'))
     }
   },
-  watch:{
-    allFlag(val){
-        if(val.length>0){
-            for(let i = 0;i<this.poleArr.length;i++){
-                if(this.checkedArr.indexOf(this.poleArr[0][i]) == -1){
-                    this.checkedArr.push(this.poleArr[0][i])
-                }
-            }
-        }else{
-            this.checkedArr = []
-        }
-    },
-  }
+  mounted() {
+      let scrollbox = document.querySelector('#scrollboxC')
+      scrollbox.addEventListener('scroll',this.onScroll)
+  },
+
 }
 </script>
 
@@ -158,5 +193,13 @@ footer{
 }
 .f-btn:last-child{
     margin-right: 0
+}
+.allchecked{
+    margin-top: 0.1rem;
+    position: absolute;
+    height: 1rem;
+    width: 1.7rem;
+    top: 0;
+    z-index: 1000
 }
 </style>

@@ -1,0 +1,11 @@
+{
+	"index.html": {
+		"href": "index.html",
+		"priority": 0,
+		"resources": [
+			"/static/BigInt.js",
+			"/static/Barrett.js",
+			"/static/RSA.js"
+		]
+	}
+}

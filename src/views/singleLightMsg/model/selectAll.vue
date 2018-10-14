@@ -3,29 +3,31 @@
         <head-top headTitle = "单灯信息"  noneIcon = "true">
             <div slot="save" @click = "hide">取消</div>
         </head-top>
-        <div class="section scroll-box">
-            <div class="con-list-sm padding padding_tb flex_between" v-for="(item,index) in poleArr">
-                <div class="label"  @click="goCheck($event)"></div>
-                <div class='con-left check checkAll' @click = "chuandi($event)">
-                    <mt-checklist v-model="checkedArr" :options="[item]"></mt-checklist>
+        <div class="section scroll-box" id="scrollboxC">
+            <div id="scrollconC">
+                <div class="con-list-sm padding padding_tb flex_between" v-for="(item,index) in poleArr" v-if="index<showIndex">
+                    <div class="label"  @click="goCheck($event)"></div>
+                    <div class='con-left check checkAll' @click = "chuandi($event)">
+                        <mt-checklist v-model="checkedArr" :options="[item]"></mt-checklist>
+                    </div>
+                    <div class="con-middle">
+                        <div class="flex_between">
+                            <div>{{item.dgmc}}</div>
+                            <div>灯杆号：{{item.dgh}}</div>
+                        </div>
+                        <div v-if= "nowIndex == 0">
+                            <div class="flex_between fontsm padding_tb font-gray">灯杆管理器地址：{{item.zcbh}} </div>
+                            <div class="flex_between fontsm font-gray">用电管理器地址：{{item.zcbh}} </div>
+                        </div>
+                        <div v-if= "nowIndex == 1">
+                            <div class="flex_between fontsm padding_tb font-gray">单灯控制器地址：{{item.ddkzqId}} </div>
+                        </div>
+                        <div v-if= "nowIndex == 2">
+                            <div class="flex_between fontsm padding_tb font-gray">时控器编号：{{item.zcbh}} </div>
+                        </div>
+                    </div>
+                    <div class="con-right" :class="item.yxxbz == 1?'font-blue':'font-gray'">{{item.yxxbz == 1?'有效':'无效'}}</div>
                 </div>
-                <div class="con-middle">
-                    <div class="flex_between">
-                        <div>{{item.dgmc}}</div>
-                        <div>灯杆号：{{item.dgh}}</div>
-                    </div>
-                    <div v-if= "nowIndex == 0">
-                        <div class="flex_between fontsm padding_tb font-gray">灯杆管理器地址：{{item.zcbh}} </div>
-                        <div class="flex_between fontsm font-gray">用电管理器地址：{{item.zcbh}} </div>
-                    </div>
-                    <div v-if= "nowIndex == 1">
-                        <div class="flex_between fontsm padding_tb font-gray">单灯控制器地址：{{item.ddkzqId}} </div>
-                    </div>
-                    <div v-if= "nowIndex == 2">
-                        <div class="flex_between fontsm padding_tb font-gray">时控器编号：{{item.zcbh}} </div>
-                    </div>
-                </div>
-                <div class="con-right" :class="item.yxxbz == 1?'font-blue':'font-gray'">{{item.yxxbz == 1?'有效':'无效'}}</div>
             </div>
             <div class="con-list-sm padding padding_tb font-gray" v-if ="poleArr.length == 0">没有任何数据</div>
         </div>   
@@ -38,11 +40,11 @@
                 <span class = "font-deepgray">选中的设备数 {{checkedArr.length}}</span>
             </div>
             <div class="flex_between padding_tb">
-                <div class="f-btn padding_tb">状态巡测</div>
-                <div class="f-btn padding_tb">时钟巡测</div>
+                <div class="f-btn padding_tb" @click = "ToLink('statesurver')">状态巡测</div>
+                <div class="f-btn padding_tb" @click = "ToLink('timesurver')">时钟巡测</div>
                 <div class="f-btn padding_tb" @click = "lightOn">设备开灯</div>
                 <div class="f-btn padding_tb" @click = "lightOff">设备关灯</div>
-                <div class="f-btn padding_tb" @click = 'timeCheck'>设备对时</div>
+                <div class="f-btn padding_tb" @click = "ToLink('devicetimecheck')">设备对时</div>
             </div>
         </footer> 
     </mt-popup>
@@ -56,7 +58,8 @@ export default {
   data () {
     return {
         checkedArr:[],
-        allFlag:[]
+        allFlag:[],
+        showIndex:6
     }
   },
   props:['popupSelect','poleArr','selectFlag','nowIndex'],
@@ -65,6 +68,29 @@ export default {
     headTop
   },
   methods:{
+    ToLink(url,kzlx){   //页面跳转
+        if(kzlx == undefined){
+            kzlx == 0
+        }
+        if(this.checkedArr.length>0){
+            this.$router.push({
+                path:'/'+url,
+                name:url,
+                query:{
+                    poleArr:this.checkedArr,
+                    kzlx:kzlx
+                }
+            })
+        }else{
+            Toast('请选择')
+        }
+    },
+    onScroll(){
+        let scrollbox = document.querySelector('#scrollboxC')
+        if(document.querySelector('#scrollconC').clientHeight < (document.querySelector('#scrollboxC').clientHeight+scrollbox.scrollTop)){
+            this.showIndex += 6
+        }
+    },
     chuandi(e){  //点击传递
         e.currentTarget.getElementsByClassName('mint-checklist-label')[0].click()
     },
@@ -95,7 +121,7 @@ export default {
             })
             .then(action => { 
                 if (action == 'confirm') {
-                    Toast('开灯成功')
+                    this.ToLink('ddkgd',1)
                 }
             })
         }else{
@@ -111,7 +137,7 @@ export default {
             })
             .then(action => { 
                 if (action == 'confirm') {
-                    Toast('关灯成功')
+                    this.ToLink('ddkgd',0)
                 }
             })
         }else{
@@ -126,11 +152,15 @@ export default {
             })
             .then(action => { 
                 if (action == 'confirm') {
-                    Toast('对时成功')
+                    Toast('对时失败')
                 }
             })
         }else(Toast('请选择需要对时的设备'))
     }
+  },
+  mounted() {
+      let scrollbox = document.querySelector('#scrollboxC')
+      scrollbox.addEventListener('scroll',this.onScroll)
   },
 
 }

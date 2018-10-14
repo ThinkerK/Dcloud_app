@@ -1,0 +1,39 @@
+<!DOCTYPE html><html><head><meta charset=utf-8><meta name=viewport content="width=device-width,initial-scale=1"><title>ipole_lighting_origin</title><script type=text/javascript src=static/RSA.js></script><script type=text/javascript src=static/BigInt.js></script><script type=text/javascript src=static/Barrett.js></script><link href=./static/css/app.29432a3b5931cf3d81b722e2ffe1cd7c.css rel=stylesheet></head><body><div id=app></div><script>(function(){
+            document.addEventListener('plusready', function() {
+            var webview = plus.webview.currentWebview();
+            plus.key.addEventListener('backbutton', function() {
+                webview.canBack(function(e) {
+                    if(window.location.href.substring(window.location.href.length-4) == 'main'){
+                		e.canBack = false
+                	}
+                    if(e.canBack) {
+                        webview.back();             
+                    } else {
+                        //webview.close(); //hide,quit
+                        //plus.runtime.quit();
+                        //首页返回键处理
+                        //处理逻辑：1秒内，连续两次按返回键，则退出应用；
+                        var first = null;
+                        plus.key.addEventListener('backbutton', function() {
+                            //首次按键，提示‘再按一次退出应用’
+                            if (!first) {
+                                first = new Date().getTime();
+                                setTimeout(function() {
+                                    first = null;
+                                }, 1500);
+                            } else {
+                                if (new Date().getTime() - first < 1500) {
+                                    plus.runtime.quit();
+                                }
+                            }
+                        }, false);
+                    }
+                })
+            });
+            var wgtVer=null;
+            plus.runtime.getProperty(plus.runtime.appid,function(inf){
+                wgtVer=inf.version;
+                console.log("当前应用版本："+wgtVer);
+            });
+        });
+      })()</script><script type=text/javascript src=./static/js/manifest.3ad1d5771e9b13dbdad2.js></script><script type=text/javascript src=./static/js/vendor.c40c93da565b55fc4e81.js></script><script type=text/javascript src=./static/js/app.c846dda5238200b579ff.js></script></body></html>

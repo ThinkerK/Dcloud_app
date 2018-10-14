@@ -9,14 +9,15 @@
     <div class="head-bg">
       <div class="head-wrap">
         <div class="head-pic"></div>
-        <div class="name ellipsis">ThinkerK</div>
+        <div class="name">{{userInfo.userName}}</div>
       </div>
     </div>
-    <div class="section-title flex_between">范围搜索</div>
+    
     <section class="flex_between">
+        <div class="section-title flex_between">范围搜索</div>
       <div class="sec-item" v-for = "(item,index) in sectionList" :key="index" @click = "model(index)">
         <div class="icon" :class = "item.icon"></div>
-        <div class="text">{{item.name}}</div>
+        <div class="text" >{{item.name}}</div>
       </div>
     </section>
     <mt-popup v-model="popupVisible" position="bottom" class="mint-popup">
@@ -41,7 +42,8 @@ import { mapState,mapActions,mapGetters,mapMutations } from 'vuex'
 export default {
   data () {
     return {
-      xzqh:'',//行政区划
+      
+      xzqh:'110108',//行政区划
       cityId:'', // 城市ID 1101 1201
       popupSearch:false,   //搜索框 开关
       popupVisible:false,   //城市选择 开关
@@ -63,12 +65,12 @@ export default {
     }
   },
   computed:{
-    ...mapGetters([ 'cityArr','cityIndex','quIndex','quName' ])
+    ...mapGetters([ 'cityArr','cityIndex','quIndex','quName','userInfo' ])
   },
   methods: {
     ...mapMutations([ 'SET_CITYINDEX','SET_QUINDEX','SET_QUNAME','SET_LUINDEX' ]),
     model(index){  //跳到单灯链表页
-      if(index != 6){
+      if(index != this.sectionList.length-1){
         if(index == 5){
           this.$router.push({
             path: '/lightswitch',
@@ -82,6 +84,10 @@ export default {
               cityId:this.cityId
             }
           })
+        }else if(index == 6){
+          Toast('暂不支持')
+        }else if(index == 7){
+          Toast('暂不支持')
         }else{
           this.$router.push({
             path: '/singlelightmsg',
@@ -134,24 +140,26 @@ export default {
   created() {
   },
   mounted() { 
+    let _this = this
     if(this.cityArr[0].qu.length == 0 ){ //判断  如果没有store 请求获取 区的列表
       let _this =this
       let city1 = {
-        czrbh:'0016FnI00005',
+        czrbh:this.userInfo.userId,
         city:1101
       } 
       api.getAddressList(city1).then(function(res){
         _this.areaSlot[2].values = JSON.parse(res.qu)
+        _this.areaSlot[2].defaultIndex = _this.quIndex
         _this.xzqh = res.qu[0].xzqh
       })
     }else{  //store 存在   直接赋值
       this.areaSlot[2].values = this.cityArr[this.cityIndex].qu
+      _this.areaSlot[2].defaultIndex = _this.quIndex
       this.xzqh = this.areaSlot[2].values[this.quIndex].xzqh
     }
     this.areaSlot[0].values = this.cityArr  //城市列
     this.cityId = this.cityArr[this.cityIndex].index
     this.areaSlot[0].defaultIndex = this.cityIndex 
-    this.areaSlot[2].defaultIndex = this.quIndex 
     this.SET_LUINDEX(0)
   },
 }
@@ -210,6 +218,8 @@ section{
     }
     .text{
       margin: 0.23rem 0;
+      width: 2.2rem;
+      margin-left: -0.45rem;
     }
   }
 }
@@ -238,6 +248,13 @@ section{
 .xiala{
   @include bg('../../images/common/xiala.png')
 }
+.ycsj{
+  @include bg('../../images/common/ycsj.png')
+}
+.xfjl{
+  @include bg('../../images/common/xfjl.png')
+}
+
 
 .form-ipt::before{
     content: '';

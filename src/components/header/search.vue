@@ -34,6 +34,7 @@ export default {
         popup:this.popupSearch,   //控制搜索框的出现
         Dgbh:''  ,           //输入的灯杆号
         searchResult:[],     //搜索结果链表
+        xzqhQx:''
     }
   },
   props:['popupSearch','xzqh'],
@@ -51,19 +52,19 @@ export default {
         let _this = this
         let data = {};
         data.sblx = 1;
-        data.xzqhQx = this.xzqh
-        console.log(this.xzqh)
+        data.xzqhQx = this.xzqh?this.xzqh:110108
         data.dgh = val
         api.getJzqDdxq(data).then(function(res){
             console.log(res)
+            _this.searchResult = res.data.slice(0,20)
         })
       },
       toDevice(item){
           this.$router.push({
             path: '/devicemsg',
             name:'devicemsg',
-            params: { 
-                name: 'name', 
+            query: { 
+                pole: item, 
             }
             /*query: {
                 name: 'name', 
@@ -71,6 +72,8 @@ export default {
             }*/
         })
       }
+  },
+  created() {
   },
   watch:{
     popupSearch(val){

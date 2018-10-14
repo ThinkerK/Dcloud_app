@@ -45,7 +45,7 @@ export default {
 .head_top{
   @include wh(100%,1.59rem);
     position: fixed;
-    z-index: 100;
+    z-index: 102;
     top: 0;
     background:#169AFF;
 }

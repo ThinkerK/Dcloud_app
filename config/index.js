@@ -9,13 +9,15 @@ module.exports = {
     assetsSubDirectory: 'static',
     assetsPublicPath: '/',
     proxyTable: {
-      '/api': {
-        target: 'http://122.113.5.31:8080',
-        changeOrigin: true,
-        pathRewrite: {
-          '^/api': '/api'
-        }
-      }
+      // '/api': {
+      //   target: 'http://47.94.243.47:8102',  //正式库
+      //   // target: 'http://122.113.5.31:8080',  //测试库
+      
+      //   changeOrigin: true,
+      //   pathRewrite: {
+      //     '^/api': '/api'
+      //   }
+      // }
     },
 
 

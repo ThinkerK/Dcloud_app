@@ -7,7 +7,7 @@
     <div class="section scroll-box">
       <div :class="lightState == 'on'?'light-on':'light-off'"></div>
       <div class="count">
-        <div style="font-size: 0.6rem;color: #fff">100</div>
+        <div style="font-size: 0.6rem;color: #fff">{{searchResult.length}}</div>
         <div>设备总数</div> 
       </div>
       <div class="chart-list flex_between">
@@ -33,6 +33,9 @@
 import headTop from '@/components/header/mainHeader'
 import { Toast,Popup,Picker,MessageBox  } from 'mint-ui'
 import { mapState,mapActions,mapGetters,mapMutations } from 'vuex'
+import api from '../../service/data.js'
+
+
 export default {
   data () {
     return {
@@ -52,6 +55,8 @@ export default {
         textAlign: 'center'
       }],//地址下拉链表
       lightState:'off',
+      xzqh:''  ,//行政区号
+      searchResult:'',//
     }
   },
   computed:{
@@ -70,6 +75,8 @@ export default {
         this.popupVisible = false
         this.SET_CITYINDEX(cIndex)
         this.SET_QUINDEX(qIndex)
+        this.xzqh = values[1].xzqh
+        this.getDdList()
       }
       else{
         Toast('该市暂无城区，请重新选择')
@@ -81,6 +88,7 @@ export default {
       if(index != -1){
         picker.setSlotValues(1, this.cityArr[index].qu)
       }
+      this.xzqh = values[1]?values[1].xzqh:''
     },
     switchClick(){
       if(this.lightState == 'on'){
@@ -105,13 +113,25 @@ export default {
           }
         })
       }
-    }
+    },
+    getDdList(){  //获取该区的单灯
+        let _this = this
+        let data = {};
+        data.sblx = 1;
+        data.xzqhQx = this.xzqh
+        data.dgh = ''
+        api.getJzqDdxq(data).then(function(res){
+            _this.searchResult = res.data
+        })
+      },
   },
   mounted() {
     this.areaSlot[2].values = this.cityArr[this.cityIndex].qu
     this.areaSlot[0].values = this.cityArr
     this.areaSlot[0].defaultIndex = this.cityIndex
     this.areaSlot[2].defaultIndex = this.quIndex
+    this.xzqh = this.cityArr[this.cityIndex].qu[this.quIndex].xzqh
+    this.getDdList()
   },
   components:{
     headTop

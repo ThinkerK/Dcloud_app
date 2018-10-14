@@ -8,25 +8,27 @@
         <ul class="tab-title">
             <li v-for = "(item,index) in titList" @click = "titClick(index)" :class = "[nowIndex == index?'active':'']">{{item}}</li>
         </ul>
-        <div class="scroll-box" style="flex: 1">
-            <div class="con-list-sm padding padding_tb flex_between" v-for="(item,index) in poleArr[nowIndex]" @click = "goDeviceMsg(item.poleId)">
-                <div class="con-middle">
-                    <div class="flex_between">
-                        <div>{{item.dgmc}}</div>
-                        <div>灯杆号：{{item.dgh}}</div>
+        <div class="scroll-box" style="flex: 1" id="scrollbox">
+            <div id="scrollcon">
+                <div class="con-list-sm padding padding_tb flex_between" v-for="(item,index) in poleArr[nowIndex]" v-if="index<showIndex"   @click = "goDeviceMsg(item)">
+                    <div class="con-middle">
+                        <div class="flex_between">
+                            <div>{{item.dgmc}}</div>
+                            <div>灯杆号：{{item.dgh}}</div>
+                        </div>
+                        <div v-if= "nowIndex == 0">
+                            <div class="flex_between fontsm padding_tb font-gray">灯杆管理器地址：{{item.zcbhDgglq}} </div>
+                            <div class="flex_between fontsm font-gray">单灯控制器地址：{{item.zcbh}} </div>
+                        </div>
+                        <div v-if= "nowIndex == 1">
+                            <div class="flex_between fontsm padding_tb font-gray">单灯控制器地址：{{item.ddkzqId}} </div>
+                        </div>
+                        <div v-if= "nowIndex == 2">
+                            <div class="flex_between fontsm padding_tb font-gray">时控器编号：{{item.zcbh}} </div>
+                        </div>
                     </div>
-                    <div v-if= "nowIndex == 0">
-                        <div class="flex_between fontsm padding_tb font-gray">灯杆管理器地址：{{item.zcbhDgglq}} </div>
-                        <div class="flex_between fontsm font-gray">单灯控制器地址：{{item.zcbh}} </div>
-                    </div>
-                    <div v-if= "nowIndex == 1">
-                        <div class="flex_between fontsm padding_tb font-gray">单灯控制器地址：{{item.ddkzqId}} </div>
-                    </div>
-                    <div v-if= "nowIndex == 2">
-                        <div class="flex_between fontsm padding_tb font-gray">时控器编号：{{item.zcbh}} </div>
-                    </div>
+                    <div class="con-right" :class="item.yxxbz == 1?'font-blue':'font-gray'">{{item.yxxbz == 1?'有效':'无效'}}</div>
                 </div>
-                <div class="con-right" :class="item.yxxbz == 1?'font-blue':'font-gray'">{{item.yxxbz == 1?'有效':'无效'}}</div>
             </div>
             <div class="con-list-sm padding padding_tb font-gray" v-if ="poleArr[nowIndex].length == 0">没有任何数据</div>
         </div>
@@ -59,6 +61,7 @@ export default {
         // jdIndex:'',//地址选择二级下标
         checkedArea:'信息路', //选择的街道
         headTitle:'单灯信息',  //头部标题
+        showIndex:6,  //懒加载 展示数据的个数
         nowIndex:0,    //tab切换下标
         titList:['光纤','WPLC','时控器'],  //单灯信息 tab切换titlesz
         popupSelect:false,   //多选页 开关
@@ -82,7 +85,7 @@ export default {
             // defaultIndex:0,
           }
         ],
-        poleArr:[[],[],[]]
+        poleArr:[[],[],[]]   //展示数据
     }
   },
   computed:{
@@ -98,7 +101,19 @@ export default {
 //     }
 //   },
   methods:{
-    ...mapMutations([ 'SET_QUINDEX','SET_LUINDEX','SET_QUNAME' ])  ,
+    ...mapMutations([ 'SET_QUINDEX','SET_LUINDEX','SET_QUNAME' ]),
+    onScroll(){
+        let scrollbox = document.querySelector('#scrollbox')
+        // let innerHight = document.querySelector('#scrollcon').clientHeight;
+        // let outerHight = document.querySelector('#scrollbox').clientHeight;
+        // let scrollTop = scrollbox.scrollTop;
+        if(document.querySelector('#scrollcon').clientHeight < (document.querySelector('#scrollbox').clientHeight+scrollbox.scrollTop)){
+            if(this.showIndex<this.poleArr[this.nowIndex].length){
+                this.showIndex += 6
+            }
+        }
+       
+    },
     addressSelect(){
         let _this = this;
         _this.popupVisible = true
@@ -106,16 +121,17 @@ export default {
     },
     titClick(index){ //控制tab切换效果
         this.nowIndex = index
+        this.showIndex = 6
     },
     selectHide(val){  //控制多选页的显示隐藏
         this.popupSelect = val
     },
-    goDeviceMsg(poleId){  //跳转到详细息
+    goDeviceMsg(pole){  //跳转到详细息
         this.$router.push({
             path:'/deviecmsg',
             name:'devicemsg',
             query: { 
-                poleId:poleId
+                pole:pole,
             }
         })
     },
@@ -146,7 +162,7 @@ export default {
         }
         return arr
     },
-    getDdxq(values){
+    getDdxq(values){ //查询单灯详情
         let _this = this
         let data = {};
         data.sblx = 1;
@@ -210,9 +226,12 @@ export default {
     }
   },
   created() {
+      
   },
   mounted(){
     this.getAddress()
+    let scrollbox = document.querySelector('#scrollbox')
+    scrollbox.addEventListener('scroll',this.onScroll)
   },
   components:{
       headTop,

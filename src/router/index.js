@@ -7,7 +7,7 @@ Vue.use(Router)
 
 export default new Router({
   routes: [{
-    path:'/',
+    path:'/main',
     name:'main',
     component: _import('main/main'),
     children: [{
@@ -18,6 +18,10 @@ export default new Router({
   },{
     path:'/devicemsg',
     name:'devicemsg',
+    meta:{
+      keepAlive:false,
+      isBack:false,
+    },
     component:_import('deviceMsg/deviceMsg')
   },{
     path:'/devicemsgreset',
@@ -49,6 +53,66 @@ export default new Router({
     path:'/jzqdetails',
     name:'jzqdetails',
     component:_import('jzqDetails/jzqDetails')
-  }
+  },
+  {
+    path:'/paramcalltest',
+    name:'paramcalltest',
+    component:_import('paramCallTest/paramCallTest')
+  },
+  {
+    path:'/datacalltest',
+    name:'datacalltest',
+    component:_import('dataCallTest/dataCallTest')
+  },
+  {
+    path:'/statesurver',
+    name:'statesurver',
+    component:_import('stateSurver/stateSurver')
+  },
+  {
+    path:'/timesurver',
+    name:'timesurver',
+    component:_import('timeSurver/timeSurver')
+  },
+  {
+    path:'/devicetimecheck',
+    name:'devicetimecheck',
+    component:_import('deviceTimeCheck/deviceTimeCheck')
+  },
+  {
+    path:'/ddkgd',
+    name:'ddkgd',
+    component:_import('ddkgd/ddkgd')
+  },
+  {
+    path:'/jzqmsgreset',
+    name:'jzqmsgreset',
+    component:_import('jzqMsgReset/jzqMsgReset')
+  },
+  {
+    path:'/jzqdatacalltest',
+    name:'jzqdatacalltest',
+    component:_import('jzqDataCallTest/jzqDataCallTest')
+  },
+  {
+    path:'/jzqtimecheck',
+    name:'jzqtimecheck',
+    component:_import('jzqTimeCheck/jzqTimeCheck')
+  },
+  {
+    path:'/jzqkgd',
+    name:'jzqkgd',
+    component:_import('jzqkgd/jzqkgd')
+  },
+  {
+    path:'/jzqdstatesurver',
+    name:'jzqdstatesurver',
+    component:_import('jzqStateSurver/jzqStateSurver')
+  },
+  {
+    path:'/',
+    name:'login',
+    component:_import('login/login')
+  },
 ]
 })
