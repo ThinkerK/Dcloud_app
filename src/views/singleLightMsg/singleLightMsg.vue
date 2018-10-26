@@ -4,11 +4,11 @@
         <div class="select" slot="save" @click = "popupSelect = true">多选</div>
     </head-top>
     <div class="section flex_col_left">
-        <div class="font-blue padding_tb bgf" @click="popupVisible = true">{{checkedArea}}<i class="xiala"></i></div>
+        <div class="font-blue padding_tb bgf" @click="popupVisible = true">{{checkedArea}}<i class="xl-blue"></i></div>
         <ul class="tab-title">
             <li v-for = "(item,index) in titList" @click = "titClick(index)" :class = "[nowIndex == index?'active':'']">{{item}}</li>
         </ul>
-        <div class="scroll-box" style="flex: 1" id="scrollbox">
+        <div class="scroll-box flex1"  id="scrollbox">
             <div id="scrollcon">
                 <div class="con-list-sm padding padding_tb flex_between" v-for="(item,index) in poleArr[nowIndex]" v-if="index<showIndex"   @click = "goDeviceMsg(item)">
                     <div class="con-middle">
@@ -27,7 +27,7 @@
                             <div class="flex_between fontsm padding_tb font-gray">时控器编号：{{item.zcbh}} </div>
                         </div>
                     </div>
-                    <div class="con-right" :class="item.yxxbz == 1?'font-blue':'font-gray'">{{item.yxxbz == 1?'有效':'无效'}}</div>
+                    <div class="con-right" :class="item.yxxbz == 1?'font-blue':'font-gray'"><div class="dd_status">{{item.yxxbz == 1?'有效':'无效'}}</div> <div class="go_right"></div></div>
                 </div>
             </div>
             <div class="con-list-sm padding padding_tb font-gray" v-if ="poleArr[nowIndex].length == 0">没有任何数据</div>
@@ -89,7 +89,7 @@ export default {
     }
   },
   computed:{
-    ...mapGetters(['quIndex','quName','luIndex' ])
+    ...mapGetters(['quIndex','quName','luIndex','userInfo' ])
   },
 //   beforeRouteLeave (to, from, next) {
 //     if(to.name == 'devicemsg'){
@@ -192,14 +192,13 @@ export default {
         let values = this.jdArr.filter((item)=>{return item.sjqhm == xzqh})[this.luIndex]
         this.checkedArea = values.xzqhmc
         _this.getDdxq(values)
-        
     },
     getAddress(){   //设定初始的地址选择
         let _this = this
         this.class = this.$route.query.class;
         this.cityId = this.$route.query.cityId;
         let cityQu = {
-            czrbh:'0016FnI00005',
+            czrbh:this.userInfo.userId,
             city:this.cityId
         }
         if(this.class == '街道'){
@@ -277,5 +276,21 @@ export default {
 }
 .con-right{
     padding-left: 0.2rem;
+}
+.xl-blue {
+        display: inline-block;
+        margin-left: 0.11rem;
+        margin-bottom: 0.05rem;
+        @include wh(0.36rem, 0.2rem) @include bg('../../images/common/downblue.png')
+}
+.go_right{
+    display: inline-block;
+    margin-left: 0.25rem;
+    @include wh(0.32rem,0.58rem)
+    @include bg('../../images/common/more.png')
+}
+.dd_status{
+    display: inline-block;
+    margin-top:-1px; 
 }
 </style>

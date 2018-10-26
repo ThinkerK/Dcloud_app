@@ -4,12 +4,14 @@
       <div class="icon"></div>
     </div>
     <div class="formbox">
+      <form id="form">
         <input type="text" placeholder=" 请输入账号" v-model = "formData.name" autocomplete='name'>
         <input type="password" placeholder=" 请输入密码" v-model = "formData.password" autocomplete='pwd'>
         <div class = 'check-box'>
             <!-- <mt-checklist v-model="portSelect" :options="['自动登陆']"></mt-checklist> -->
         </div>
         <button class="submit" @click = 'handleLogin'>登 陆</button>
+      </form>
     </div>
   </div>
 </template>
@@ -29,8 +31,8 @@ export default {
   },
   methods:{
     ...mapActions(['login']),
-    handleLogin(){
-      console.log(this.formData.name)
+    handleLogin(e){
+      e.preventDefault()   //阻表单默认提交
       let _this = this
       if(this.formData.name != '' && this.formData.pwd != ''){
         this.login(this.formData).then(function(res){
@@ -48,6 +50,9 @@ export default {
     }
   },
   mounted() {
+    // if(window.localStorage){
+    //   console.log(window.localStorage)
+    // }
   },
 }
 </script>

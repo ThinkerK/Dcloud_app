@@ -26,7 +26,6 @@ const user = {
     },
     actions:{
         login({ commit }, userInfo) {
-            console.log(userInfo)
             return new Promise((resolve, reject) => {
                 setMaxDigits(130);
               var key = new RSAKeyPair("10001","","866cafa116451ce58386c8286a75e21a534e1ca0fdb79ea6991d660911592f062097b8ac559711b6718407712334c12d383e5d9b40d0abcdbd3dbc54d2ff52cb");

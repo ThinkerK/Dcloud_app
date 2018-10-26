@@ -1,5 +1,6 @@
 <template>
   <div class="datacalltest full">
+      <loading v-if = "loadingShow"></loading>
     <head-top headTitle = "数据召测结果" goBack = "true"></head-top>
     <div class = "section scroll-box">
         <div class="con-list-sm padding">
@@ -65,6 +66,7 @@ import iptApen from '@/components/common/iptApen'
 import Bus from "@/config/bus.js";
 import api from '../../service/data.js'
 import xunce from '../../service/xunce.js'
+import loading from '@/components/loading/loading'
 
 
 export default {
@@ -81,13 +83,15 @@ export default {
         ddkzqIdArr:[]  , // 单灯控制器数组
         zhaoceData:[]  ,
         dataFlag:false ,
-        zczt:'正在召测'
+        zczt:'正在召测',
+        loadingShow:false,
     }
   },
   components:{
       headTop,
       lightCell,
       iptApen,
+      loading
   },
   methods:{
     setPoleMsg(pole){  //获取灯杆信息
@@ -95,6 +99,7 @@ export default {
         this.msgList[1].con = pole.dgh
     },
     callTestFun(rwid,ddkzqIdArr){  //巡测
+        this.loadingShow = true
         let _this = this
         let data = {}
         data.rwid = rwid
@@ -111,7 +116,7 @@ export default {
         data.bwid = bwid
         data.czbz = 'jd'
         let i=0
-        let forRequest =  setInterval(function(){
+        this.forRequest =  setInterval(function(){
             i++
             if(i<10){
                 api.showCallTestMsg(data).then(function(result){
@@ -121,12 +126,14 @@ export default {
                     if(result.length == _this.ddkzqIdArr.length){
                         _this.zhaoceData = result[0]
                         _this.zczt = '成功'
-                        clearTimeout(forRequest)
+                        clearTimeout(_this.forRequest)
+                        _this.loadingShow = false
                     }
                 })
             }else{
-                clearInterval(forRequest)
+                clearInterval(_this.forRequest)
                 _this.zczt = "失败"
+                _this.loadingShow = false
             }
         },500)
     }
@@ -143,6 +150,7 @@ export default {
   beforeDestroy() {
       Bus.$emit('dataCallTest',this.pole)
       Bus.$off('dataCallTest')
+      clearInterval(this.forRequest)
   },
 }
 </script>

@@ -38,6 +38,8 @@ import iptApen from '@/components/common/iptApen'
 import lightCell from '@/components/common/lightCell'
 import poleSwitch from '@/components/common/poleSwitch'
 import Bus from '@/config/bus.js'
+import api from '@/service/data.js'
+import { Toast } from 'mint-ui'
 
 export default {
   data () {
@@ -68,13 +70,23 @@ export default {
       this.pole = this.$route.query.pole
       this.msgList[0].con = this.pole.dgmc
       this.msgList[1].con = this.pole.dgh
-      this.communica = this.pole.zcbhDgglq
-      this.electric = this.pole.zcbh
+      this.communica = this.pole.zcbh
     },
-    keep(){  //保存更改
-      this.pole.zcbhDgglq = this.communica
-      this.pole.zcbh = this.electric
-      this.$router.go(-1)
+    keep(){  //保存更改、
+      let _this = this
+      let data = {}
+      data.zcbh =this.communica
+      data.jzkzqId = this.pole.jzkzqId
+      api.updatedJzqZcbh(data).then(function(res){
+        if(res == '修改成功'){
+          _this.pole.zcbh = _this.communica
+          _this.$router.go(-1)
+          Toast('保存成功')
+        }else{
+          Toast('保存失败')
+        }
+      })
+
     }
   },
   watch:{

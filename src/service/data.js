@@ -40,8 +40,11 @@ export default {
     jzqCallTest(data){   //集中器巡测
         return api.post('/api/appRcglController/queryjzkq',data)
     },
+    // jzqShowCallTestMsg(data){   //集中器巡测结果展示
+    //     return api.post('/api/appRcglController/queryjzkzqxcjgxq',data)
+    // },
     jzqShowCallTestMsg(data){   //集中器巡测结果展示
-        return api.post('/api/appRcglController/queryjzkzqxcjgxq',data)
+        return api.post('/api/appCommonController/getMessage',data)
     },
 
     jzqShowLightSwitch(data){  // 集中器开关灯结果展示
@@ -49,5 +52,14 @@ export default {
     },
     jzqShowCheckTime(data){  //集中器对时信息展示
         return api.post('/api/appRcglController/queryjzkzqdsjgxq',data)
-    }
+    },
+    updateZcbh(data){   //修改灯杆管理器和修改单灯控制器编号
+        return api.post('/api/appRcglController/updateZcbh',data)
+    },
+    updatedJzqZcbh(data) {//修改集中器资产编号
+        return api.post('/api/appRcglController/updateZcbhJzq',data)
+    },
+    dnbSendMessage(data) {//发送消息-电能表
+        return api.post('/api/appCommonController/sendMessageDnb',data)
+    },
 }

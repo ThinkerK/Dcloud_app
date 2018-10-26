@@ -9,10 +9,10 @@ const service = axios.create({
     // baseURL: process.env.API_HOST,  
     baseURL:'http://47.94.243.47:8102', //正式库
     // baseURL: 'http://122.113.5.204:9023',  //测试库
-    // baseURL: 'http://122.113.5.31:8080',  //本地库/
+    // baseURL: 'http://122.113.5.31:8080',  //本地库
     timeout: 5000,
     transformRequest: [function (data) {
-          return Qs.stringify(data)
+        return Qs.stringify(data)
     }],
     // withCredentials: true,    //跨域
 })

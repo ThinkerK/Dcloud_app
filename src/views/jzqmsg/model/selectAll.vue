@@ -31,8 +31,8 @@
             </div>
             <div class="flex_between padding_tb">
                 <div class="f-btn padding_tb" @click = "ToLink('jzqdstatesurver')">数据召测</div>
-                <div class="f-btn padding_tb" @click = "lightOn">设备开灯</div>
-                <div class="f-btn padding_tb" @click = "lightOff">设备关灯</div>
+                <div class="f-btn padding_tb" @click = "ToLink('jzqkgd', 1)">设备开灯</div>
+                <div class="f-btn padding_tb" @click = "ToLink('jzqkgd', 0)">设备关灯</div>
                 <div class="f-btn padding_tb" @click = "ToLink('jzqtimecheck')">设备对时</div>
             </div>
         </footer> 
@@ -43,6 +43,7 @@
 import { Popup,MessageBox,Toast } from 'mint-ui'
 import headTop from '@/components/header/mainHeader'
 import listItem from './listItem'
+import { mapActions, mapGetters } from 'vuex'
 export default {
   data () {
     return {
@@ -56,24 +57,45 @@ export default {
     listItem,
     headTop
   },
+  computed:{
+    ...mapGetters(['userInfo'])
+  },
   methods:{
-    ToLink(url,kzlx){   //页面跳转
-        if(kzlx == undefined){
-            kzlx == 0
-        }
-        if(this.checkedArr.length>0){
-            this.$router.push({
-                path:'/'+url,
-                name:url,
-                query:{
-                    poleArr:this.checkedArr,
-                    kzlx:kzlx
+    ...mapActions(['login']),
+    ToLink(url, kzlx) {   //页面跳转
+                let _this = this
+                if (kzlx == undefined) {
+                    kzlx == 0
                 }
-            })
-        }else{
-            Toast('请选择')
-        }
-    },
+                if (this.checkedArr.length > 0) {
+                    MessageBox.prompt('请输入密码', {
+                        inputType: 'password',
+                    }).then((val) => {
+                        let formData = {
+                            name: this.userInfo.loginId,
+                            password: val.value
+                        }
+                        this.login(formData).then(function (res) {
+                            if (res) {
+                                _this.$router.push({
+                                    path: '/' + url,
+                                    name: url,
+                                    query: {
+                                        poleArr: _this.checkedArr,
+                                        kzlx: kzlx
+                                    }
+                                })
+                            }else{
+                                Toast('输入的密码有误')
+                            }
+                        })
+                    }, () => {
+                        console.info('cancel')
+                    })
+                } else {
+                    Toast('请先选择')
+                }
+            },
     onScroll(){
         let scrollbox = document.querySelector('#scrollboxC')
         if(document.querySelector('#scrollconC').clientHeight < (document.querySelector('#scrollboxC').clientHeight+scrollbox.scrollTop)){

@@ -7,8 +7,8 @@ const address = {
                     {'index':'1101','xzqhmc':'北京市','qu':[]},
                     {'index':'1201','xzqhmc':'天津市','qu':[]}
                 ],
-        quIndex:1,  //选择区的下标
-        quName:'门头沟',  //区名称
+        quIndex:0,  //选择区的下标
+        quName:'',  //区名称
         luIndex:0, //地址选择二级（街道下标）
     },
     mutations:{

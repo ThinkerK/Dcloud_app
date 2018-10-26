@@ -2,6 +2,8 @@
   <div class="light-cell flex_between padding_tb border">
     <div class = "left flex_between">
         <div>
+            <i class="nullIcon" v-if = "nullIcon"></i> 
+            <i class="nnullIcon" v-if = "nnullIcon"></i>   
             <i class="msgIcon" v-if = "msgIcon"></i>
             <span class="tit">{{lfCon}}</span>     
         </div>
@@ -25,7 +27,7 @@ export default {
     return {
     }
   },
-  props:['lfCon','rtCon','mdCon','msgIcon','zcCon','blue']
+  props:['lfCon','rtCon','mdCon','msgIcon','zcCon','blue','nullIcon','nnullIcon']
 }
 </script>
 
@@ -38,6 +40,18 @@ export default {
     display: inline-block;
     @include wh(0.48rem,0.48rem)
     @include bg('../../images/common/shuju.png')
+    vertical-align: middle;
+    margin-right:0.2rem;
+}
+.nullIcon{
+    display: inline-block;
+    @include wh(0.48rem,0.48rem)
+    vertical-align: middle;
+    margin-right:0.2rem;
+}
+.nnullIcon{
+    display: inline-block;
+    @include wh(0.96rem,0.48rem)
     vertical-align: middle;
     margin-right:0.2rem;
 }

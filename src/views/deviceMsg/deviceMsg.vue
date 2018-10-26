@@ -1,9 +1,10 @@
 <template>
   <div class="deviceMsg">
+    <loading v-if = 'loadingShow'></loading>
     <head-top goBack = "true" headTitle = "设备信息">
         <div slot = "save" class="reset-btn" @click = "ToLink('devicemsgreset')"><i></i></div>
     </head-top>
-    <div class="section ftmargin scroll-box">
+    <div class="section scroll-box">
       <div class="con-list-sm  padding">
         <light-cell v-for = "(item,index) in msgList" :key="index" :lfCon = "item.title" :rtCon = "item.con"></light-cell>
       </div>
@@ -25,6 +26,7 @@
           <div :class="[item.state == 1?'font-blue':'font-gray']">{{item.state == 1?'有效':'无效'}}</div>
         </li>
       </ul>
+      <div style = "height: 2.5rem"></div>
     </div>
     <footer-btn>
       <div slot = 'btn' class="f-btn padding_tb" @click = "ToLink('paramsmsg')">参数下发</div>
@@ -45,6 +47,7 @@ import Bus from '@/config/bus.js'
 import { Popup,MessageBox,Toast,Indicator } from 'mint-ui'
 import api from '../../service/data.js'
 import xunce from '../../service/xunce.js'
+import loading from '@/components/loading/loading'
 
 export default {
   data () {
@@ -64,14 +67,16 @@ export default {
       portSelect:[], //多选框选中值
       portOptions:[{lj:'逻辑节点:0',wl:'物理节点: 0',state:'1' },{lj:'逻辑节点:1',wl:'物理节点: 1',state:'1' },{lj:'逻辑节点:3 ',wl:'物理节点: 2',state:'0'}], // 多选的内容
       dengFlag:false, //开关灯按钮
-      ddkzqIdArr:[], //巡测数组
+      ddkzqIdArr:[], //巡测数组,
+      loadingShow:false
     } 
   },
   components:{
     headTop,
     minuteFlag,
     footerBtn,
-    lightCell
+    lightCell,
+    loading
   },
   methods:{
     ToLink(url){   //页面跳转
@@ -84,6 +89,7 @@ export default {
       })
     },
     lightSwitch(rwid,ddkzqIdArr,kzlx){    //开关灯
+      this.loadingShow = true
       let _this = this
       let data = {}
       data.rwid = rwid
@@ -94,6 +100,7 @@ export default {
       })
     },
     checkTime(rwid,ddkzqIdArr){  //对时请求
+      this.loadingShow = true
       let _this = this
       let data = {}
       data.rwid = rwid
@@ -108,21 +115,24 @@ export default {
       data.czlx = 2
       data.bwid = bwid
       let i = 0
-      let forRequest =  setInterval(function(){
+      this.forRequest =  setInterval(function(){
           console.log(i)
           i++
           if(i<10){
               api.showCheckTime(data).then(function(result){
                   if(result.data.length == _this.ddkzqIdArr.length){
-                      clearTimeout(forRequest)
+                      _this.loadingShow = false
+                      clearTimeout(_this.forRequest)
                       Toast('当前设备时间'+result.data[0].bzsj)
+
                   }
               })
           }else{              
-            clearInterval(forRequest)
+            _this.loadingShow = false
+            clearInterval(_this.forRequest)
             Toast('对视失败')
           }
-      },500)
+      },1000)
     },
     lightCB(bwid,kzlx){  //开关灯回调
       let _this = this 
@@ -132,21 +142,23 @@ export default {
       data.kzlx = kzlx
       console.log(kzlx)
       let i = 0
-      let forLight =  setInterval(function(){
+      this.forLight =  setInterval(function(){
           i++
           if(i<10){
               api.showLightSwitch(data).then(function(result){
                   if(result.data.length == _this.ddkzqIdArr.length){
-                      clearTimeout(forLight)
+                      clearTimeout(_this.forLight)
+                      _this.loadingShow = false
                       Toast(result.data.zxjg)
                   }
               })
           }else{
-              clearInterval(forLight)
+              clearInterval(_this.forLight)
+              _this.loadingShow = false
               let msg = kzlx == '1'?'开灯失败':'关灯失败'
               Toast(msg)
           }
-      },500)
+      },1000)
     },
     lightOn(){    //开灯
       MessageBox.confirm('',{
@@ -241,6 +253,10 @@ export default {
   },
   mounted() {
     this.ddkzqIdArr.push(this.pole.ddkzqId)
+  },
+  beforeDestroy() {
+    clearInterval(this.forLight)
+    clearInterval(this.forRequest)
   },
   // beforeRouteLeave (to, from, next) {
   //   if(to.name != 'singlelightmsg'){

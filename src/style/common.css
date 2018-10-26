@@ -17,6 +17,18 @@ body:hover, div:hover, span:hover, header:hover, footer:hover, nav:hover, sectio
   outline: none;
 }
 
+.font_orgin {
+  color: #FEE578;
+}
+
+.font_pick {
+  color: #FC2D8A;
+}
+
+.font_red {
+  color: #FF5B2E;
+}
+
 input[type="button"], input[type="submit"], input[type="search"], input[type="reset"] {
   -webkit-appearance: none;
 }
@@ -129,6 +141,10 @@ input::-webkit-input-placeholder {
   overflow: hidden;
 }
 
+.border-none {
+  border: none !important;
+}
+
 .border {
   border-bottom: 1px solid #f1f1f1;
 }
@@ -219,6 +235,13 @@ input::-webkit-input-placeholder {
   width: 5.5rem;
 }
 
-.zc-box-md div {
+.zc-box-md div, .flex1 {
   flex: 1;
+}
+
+.dates-box {
+  background: red;
+  font-size: 0.38rem;
+  color: white;
+  padding: 0.1rem 0;
 }

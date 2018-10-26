@@ -11,6 +11,8 @@
     "build": "node build/build.js"
   },
   "dependencies": {
+    "@antv/f2": "^3.2.3",
+    "highcharts": "^6.2.0",
     "vue": "^2.5.2",
     "vue-awesome-picker": "^1.1.0",
     "vue-pickers": "^1.1.5",

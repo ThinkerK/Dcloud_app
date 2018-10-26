@@ -19,6 +19,16 @@ $title:0.42rem;
 $confont:0.36rem;
 $concolor:#999999;
 
+.font_orgin{
+    color: #FEE578
+}
+.font_pick{
+    color:#FC2D8A
+}
+.font_red{
+    color:#FF5B2E
+}
+
 input[type="button"], input[type="submit"], input[type="search"], input[type="reset"] {
     -webkit-appearance: none;
 }
@@ -114,6 +124,9 @@ input::-webkit-input-placeholder {
     overflow: hidden
 }
 
+.border-none{
+    border: none !important
+}
 // input::-webkit-search-cancel-button{
 //     display: none;
 //   }
@@ -126,7 +139,7 @@ input::-webkit-input-placeholder {
 }
 
 .con-list-sm .light-cell:last-child{
-    border: none
+    border: none 
 }
 
 .padding_tb{
@@ -209,6 +222,13 @@ input::-webkit-input-placeholder {
 .zc-box-md{
     width: 5.5rem;
 }
-.zc-box-md div{
+.zc-box-md div,.flex1{
     flex: 1
+}
+
+.dates-box{
+    background: red;
+    font-size: 0.38rem; 
+    color: white;
+    padding: 0.1rem 0
 }

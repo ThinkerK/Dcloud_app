@@ -52,7 +52,7 @@ export default {
         let _this = this
         let data = {};
         data.sblx = 1;
-        data.xzqhQx = this.xzqh?this.xzqh:110108
+        data.xzqhQx = this.xzqh
         data.dgh = val
         api.getJzqDdxq(data).then(function(res){
             console.log(res)

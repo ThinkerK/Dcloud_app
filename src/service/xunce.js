@@ -29,14 +29,6 @@ export default {
                 dataSend.zzdz = result[i].zzdz;//子站地址
                 dataSend.txfs = result[i].txfs;//通讯方式
             }
-
-            if(sblx == 'jzq'){
-                dataSend.bwid = data[i].bwid;//报文id
-                dataSend.zzdz = data[i].zzdz;//子站地址
-                dataSend.txfs = data[i].txfs;//通讯方式
-                dataSend.jzkzqId = data[i].jzkzqId;//集中器id
-                dataSend.zcbh = data[i].zcbh;//资产编号
-            }
             // dataSend.status = 1;//巡测单击为1召测设备信息双击为2召测内存信
             dataSend.opType = 1;
             api.sendMessage(dataSend).then(function(result){
@@ -44,10 +36,46 @@ export default {
             if(sblx == 'dd'){
                 dataSend.func(result[i].bwid,dataSend.kzlx=='kd'?'1':'0')
             }
-            if(sblx == 'jzq'){
-                dataSend.func(data[i].bwid,dataSend.kzlx=='kd'?'1':'0')
-            }
         }
+    },
+    jzqDataSend(result,sblx,kzlx,cbfun){
+        let _this = this
+        for(let i=0;i<result[0].data.length;i++){
+            let data = result[0].data[i]
+            let dataSend = {}
+            dataSend.sblx = sblx;//设备类型 dd jzq
+            dataSend.kzlx = kzlx;//控制类型 ds(对时) xc(巡测) kd(开灯) gd(关灯) dataSend.func = kdCallBack;//回调函数
+            dataSend.func = cbfun;//回调函数
+            dataSend.kzsc = "15";//开关灯时长
+            dataSend.opType = 1;
+            dataSend.bwid = data.bwid;//报文id
+            dataSend.zzdz = data.cqh;//子站地址
+            dataSend.txfs = data.txlx;//通讯方式
+            dataSend.jzkzqId = data.jzkzqId;//集中器id
+            dataSend.zcbh = data.zcbh;//资产编号
+            api.sendMessage(dataSend).then(function(result){
+            }) 
+        }
+        cbfun(result[0].data,kzlx=='kd'?'1':'0')
+    },
+    dnbDataSend(result,sblx,kzlx,cbfun){
+        let _this = this
+        for(let i=0;i<result[0].data.length;i++){
+            let data = result[0].data[i]
+            let dataSend = {}
+            dataSend.sblx = sblx;//设备类型 dd jzq
+            dataSend.kzlx = kzlx;//控制类型 ds(对时) xc(巡测) kd(开灯) gd(关灯) dataSend.func = kdCallBack;//回调函数
+            dataSend.func = cbfun;//回调函数
+            dataSend.kzsc = "15";//开关灯时长
+            dataSend.opType = 1;
+            dataSend.bwid = data.bwid;//报文id
+            dataSend.zzdz = data.cqh;//子站地址
+            dataSend.txfs = data.txlx;//通讯方式
+            dataSend.jzkzqId = data.jzkzqId;//集中器id
+            dataSend.zcbh = data.zcbh;//资产编号
+            api.dnbSendMessage(dataSend).then(function(result){})     
+        }
+        cbfun(result[0].data,kzlx=='kd'?'1':'0')
     },
 
 }

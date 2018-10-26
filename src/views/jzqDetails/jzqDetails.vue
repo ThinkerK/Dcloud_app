@@ -1,9 +1,10 @@
 <template>
 <div class="deviceMsg">
+  <loading v-if = "loadingShow"></loading>
   <head-top goBack = "true" headTitle = "集中器信息">
       <div slot = "save" class="reset-btn" @click = "ToLink('jzqmsgreset')"><i></i></div>
   </head-top>
-  <div class="section ftmargin scroll-box">
+  <div class="section scroll-box">
     <div class="con-list-sm  padding">
       <light-cell v-for = "(item,index) in msgList" :key="index" :lfCon = "item.title" :rtCon = "item.con"></light-cell>
     </div>
@@ -35,6 +36,7 @@
         <div :class="[item.state == 1?'font-blue':'font-gray']">{{item.state == 1?'启用':'不启用'}}</div>
       </li>
     </ul>
+    <div style = "height: 2.5rem"></div>
   </div>
   <footer-btn>
     <div slot = 'btn' class="f-btn padding_tb">参数下发</div>
@@ -55,6 +57,7 @@ import Bus from '@/config/bus.js'
 import { Popup,MessageBox,Toast,Indicator } from 'mint-ui'
 import api from '../../service/data.js'
 import xunce from '../../service/xunce.js'
+import loading from '@/components/loading/loading'
 
 export default {
 data () {
@@ -72,14 +75,16 @@ data () {
     portOptions:[{lj:'节点:0',wl:'序号: 0',state:'1' },{lj:'节点:1',wl:'序号: 1',state:'1' },{lj:'节点:3 ',wl:'序号: 2',state:'0'}], // 多选的内容
     yaoxinMsg:[{lj:'节点:0',wl:'序号: 0',state:'1' }],
     dengFlag:false, //开关灯按钮
-    ddkzqIdArr:[], //巡测数组
+    ddkzqIdArr:[], //巡测数组,
+    loadingShow:false
   } 
 },
 components:{
   headTop,
   minuteFlag,
   footerBtn,
-  lightCell
+  lightCell,
+  loading
 },
 methods:{
   ToLink(url){   //页面跳转
@@ -92,64 +97,69 @@ methods:{
     })
   },
   lightSwitch(rwid,ddkzqIdArr,kzlx){    //开关灯
+    this.loadingShow = true
     let _this = this
     let data = {}
     data.rwid = rwid
     data.jzkzqIds = ddkzqIdArr.join(',')
     data.kzlx = kzlx
     api.jzqCallTest(data).then(function(result){
-      xunce.setDataSend(result,'jzq',kzlx == 1?'kd':'gd',_this.lightCB)
+      xunce.jzqDataSend(result,'jzq',kzlx == 1?'kd':'gd',_this.lightCB)
     })
   },
   checkTime(rwid,ddkzqIdArr){  //对时请求
+    this.loadingShow = true
     let _this = this
     let data = {}
     data.jzkzqIds = ddkzqIdArr.join(',')
     api.jzqCallTest(data).then(function(result){
-      xunce.setDataSend(result,'jzq','ds',_this.checkTimeCB)
+      xunce.jzqDataSend(result,'jzq','ds',_this.checkTimeCB)
     })
   },
-  checkTimeCB(bwid){
+  checkTimeCB(jzqArr){
     let _this = this 
     let data = {}
     data.czlx = 2
-    data.bwid = bwid
+    data.bwid = jzqArr[0].bwid
     let i = 0
-    let forRequest =  setInterval(function(){
+    this.forRequest =  setInterval(function(){
         console.log(i)
         i++
         if(i<10){
             api.jzqShowCheckTime(data).then(function(result){
                 if(result.data.length == _this.ddkzqIdArr.length){
-                    clearTimeout(forRequest)
+                    _this.loadingShow = false
+                    clearTimeout(_this.forRequest)
                     Toast('当前设备时间'+result.data[0].bzsj)
                 }
             })
-        }else{              
-          clearInterval(forRequest)
+        }else{     
+          _this.loadingShow = false         
+          clearInterval(_this.forRequest)
           Toast('对时失败')
         }
-    },500)
+    },1000)
   },
-  lightCB(bwid,kzlx){  //开关灯回调
+  lightCB(jzqArr,kzlx){  //开关灯回调
     let _this = this 
     let data = {}
     data.czlx = 2
-    data.bwid = bwid
+    data.bwid = jzqArr[0].bwid
     data.kzlx = kzlx
-    console.log(kzlx)
     let i = 0
-    let forLight =  setInterval(function(){
+    this.forLight =  setInterval(function(){
         i++
         if(i<10){
             api.jzqShowLightSwitch(data).then(function(result){
                 if(result.data.length == _this.ddkzqIdArr.length){
-                    clearTimeout(forLight)
+                    _this.loadingShow =false
+                    clearTimeout(_this.forLight)
                     Toast(result.data.zxjg)
                 }
             })
         }else{
-            clearInterval(forLight)
+          _this.loadingShow = false
+            clearInterval(_this.forLight)
             let msg = kzlx == '1'?'开灯失败':'关灯失败'
             Toast(msg)
         }
@@ -223,6 +233,10 @@ created() {
 },
 mounted() {
   this.ddkzqIdArr.push(this.pole.jzkzqId)
+},
+beforeDestroy() {
+  clearInterval(this.forRequest)
+  clearInterval(this.forLight)
 },
 }
 </script>
