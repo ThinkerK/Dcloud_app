@@ -14,9 +14,38 @@
         <div>设备总数</div>
       </div>
       <div class="chart-list flex_between">
-        <div class="count">{{sCount}}</div>
-        <div class="count">{{fCount}}</div>
-        <div class="count">{{sCount == 0?0:(sCount/searchResult.length)*100}}%</div>
+        <div class="count">
+            <progress-bar data="77" procolor="#FEE578">
+                <div slot="titcon">
+                    <div style="font-size: 0.48rem">
+                        355
+                    </div>
+                    <div style="font-size: 0.32rem">
+                       成功数
+                    </div>
+                </div>
+            </progress-bar>
+        </div>
+        <div class="count"><progress-bar data="23" procolor="#2256E5">
+            <div slot="titcon">
+                <div style="font-size: 0.48rem">
+                    32
+                </div>
+                <div style="font-size: 0.32rem">
+                   失败数
+                </div>
+            </div>
+        </progress-bar></div>
+        <div class="count"><progress-bar data="77" procolor="#169AFF">
+            <div slot="titcon">
+                <div style="font-size: 0.48rem">
+                    77%
+                </div>
+                <div style="font-size: 0.32rem">
+                   成功率
+                </div>
+            </div>
+        </progress-bar></div>
       </div>
       <div class="switch-box">
         <div class="switch-btn" @click="switchClick">{{lightState == 'on' ?'关灯':'开灯'}}</div>
@@ -254,8 +283,7 @@
     .chart-list {
       @include wh(100%, auto) padding: 0.35rem 0.7rem;
       .count {
-        @include wh(2.34rem, 2.34rem) background: rgba(0, 0, 0, 0.2);
-        border-radius: 50%;
+        @include wh(2.34rem, 2.34rem)
       }
     }
     .switch-box {

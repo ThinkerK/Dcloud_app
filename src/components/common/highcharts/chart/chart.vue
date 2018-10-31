@@ -26,7 +26,7 @@ export default {
 				settings.legend.enabled = false
 			}
 			HighCharts.setOptions(defaultOptionsZhCn);
-	   	 	let chart = HighCharts.chart(this.$el,settings);
+			let chart = HighCharts.chart(this.$el,settings);
 	   	 	this.$emit('ready',chart);
 		}
 	},

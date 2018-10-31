@@ -173,5 +173,15 @@ export default new Router({
     name:'f2charts',
     component:_import('F2Charts/F2Charts')
   },
+  {
+    path:'/highstock',
+    name:'highstock',
+    component:_import('test/highstock')
+  },
+  {
+    path:'/echart',
+    name:'echart',
+    component:_import('test/echarts')
+  },
 ]
 })
