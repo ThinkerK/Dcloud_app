@@ -7,16 +7,18 @@ import './config/rem'
 import store from './store'
 import MintUI from 'mint-ui'
 import 'mint-ui/lib/style.css'
-import AwesomePicker from 'vue-awesome-picker';
 
 import components from './components/common'
+// 引入
+
+import FastClick from 'fastclick'
+
 //注册全局自定义组件
 components.map(component => {
   Vue.component(component.name, component);
-  console.log(components)
 });
 
-Vue.use(AwesomePicker);
+FastClick.attach(document.body);
 Vue.config.productionTip = false
 Vue.use(MintUI)
 

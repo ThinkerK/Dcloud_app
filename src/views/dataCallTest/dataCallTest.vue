@@ -8,7 +8,7 @@
         </div>
         <div class="con-list-sm padding">
             <light-cell lfCon = "当前时间"></light-cell>
-            <light-cell msgIcon = "true" lfCon = "设备时间" :mdCon = "zhaoceData.zxsj" :zcCon = "zczt"></light-cell>   
+            <light-cell msgIcon = "true" lfCon = "设备时间" :mdCon = "zhaoceData.ddsj" :zcCon = "zczt"></light-cell>   
         </div>
         <div class="con-list-sm padding">
             <light-cell lfCon = "运行状态"></light-cell>
@@ -18,7 +18,7 @@
                     <div>2</div>
                     <div>3</div>
                 </div>
-            </light-cell> 
+            </light-cell>
             <light-cell msgIcon = "true" lfCon = "回路状态" :zcCon = "zczt">
                 <div slot="zc-box" class="flex_between zc-box-md" v-if = "zhaoceData.ddzt != null">
                     <div>{{zhaoceData.ddzt.split('|')[0]}}</div>
@@ -67,7 +67,7 @@ import Bus from "@/config/bus.js";
 import api from '../../service/data.js'
 import xunce from '../../service/xunce.js'
 import loading from '@/components/loading/loading'
-
+import { mapGetters } from 'vuex'
 
 export default {
   data () {
@@ -87,6 +87,9 @@ export default {
         loadingShow:false,
     }
   },
+  computed:{
+      ...mapGetters([ 'userInfo' ])
+  },
   components:{
       headTop,
       lightCell,
@@ -103,7 +106,9 @@ export default {
         let _this = this
         let data = {}
         data.rwid = rwid
+        data.czrbh = this.userInfo.userId
         data.ddkzqIds = ddkzqIdArr.join(',')
+        console.log(data)
         api.callTest(data).then(function(result){
             console.log(1)
             xunce.setDataSend(result,'dd','xc',_this.zcCallBack)

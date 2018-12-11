@@ -49,6 +49,27 @@ const user = {
               })
             })
           },
+
+          wechatLogin({ commit },wechatId){
+              return new Promise((resolve,reject) => {
+                  let data = {
+                      wechatId:wechatId,
+                      loginClient: "web",
+                      loginType:4
+                  }
+                  api.weixinLogin(data).then(data => {
+                    if(data && data.mxToken) {
+                        commit('SET_TOKEN', data.mxToken)
+                        commit('SET_USERINFO',data.data)
+                        resolve(true)
+                      }
+                      resolve(false)
+                  }).catch(error => {
+                    console.info(error);
+                    reject(error)
+                  })
+              })
+          }
     }
 }
 

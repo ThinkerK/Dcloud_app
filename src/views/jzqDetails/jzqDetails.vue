@@ -58,6 +58,7 @@ import { Popup,MessageBox,Toast,Indicator } from 'mint-ui'
 import api from '../../service/data.js'
 import xunce from '../../service/xunce.js'
 import loading from '@/components/loading/loading'
+import { mapGetters } from 'vuex'
 
 export default {
 data () {
@@ -86,6 +87,9 @@ components:{
   lightCell,
   loading
 },
+computed:{
+  ...mapGetters([ 'userInfo' ])
+},
 methods:{
   ToLink(url){   //页面跳转
     this.$router.push({
@@ -100,6 +104,7 @@ methods:{
     this.loadingShow = true
     let _this = this
     let data = {}
+    data.czrbh = this.userInfo.userId
     data.rwid = rwid
     data.jzkzqIds = ddkzqIdArr.join(',')
     data.kzlx = kzlx
@@ -111,6 +116,7 @@ methods:{
     this.loadingShow = true
     let _this = this
     let data = {}
+    data.czrbh = this.userInfo.userId
     data.jzkzqIds = ddkzqIdArr.join(',')
     api.jzqCallTest(data).then(function(result){
       xunce.jzqDataSend(result,'jzq','ds',_this.checkTimeCB)

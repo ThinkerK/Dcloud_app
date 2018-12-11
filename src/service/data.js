@@ -62,4 +62,41 @@ export default {
     dnbSendMessage(data) {//发送消息-电能表
         return api.post('/api/appCommonController/sendMessageDnb',data)
     },
+    queryAbnormalMsg(data) {  //查询异常信息
+        return api.post('/api/eventManagerController/queryDYcsj',data)
+    },
+    abnormalMsgDetail(data) { //查询异常信息详情
+        return api.post('/api/eventManagerController/queryDYcsjDetail',data)
+    },
+    repairMsg(data){  //修复信息查询
+        return api.post('/api/eventManagerController/queryDYcsjXfxx',data)
+    },
+    queryAbnormalPie(data){  //全区异常总数/台区异常总数占比图
+        return api.post('/api/eventManagerController/queryDYcsjPie',data)
+    },
+    queryRepairPie(data){  //台区修复占比
+        return api.post('/api/eventManagerController/queryDYcsjPieYesAndNo',data)
+    },
+    queryAbnormalLine(data){  //台区异常总数折线
+        return api.post('/api/eventManagerController/queryDYcsjLine',data)
+    },
+    barAbnormal(data){  //台区异常总数 柱图
+        return api.post('/api/eventManagerController/queryDYcsjBar',data)
+    }, 
+    pieRepair(data){  //台区 修复数据 饼图
+        return api.post('/api/eventManagerController/queryDYcsjPieYesAndNo',data)
+    },
+    repairRatio(data){  //台区 修复数据 占比柱状图
+        return api.post('/api/eventManagerController/queryDYcsjBarContrast',data)
+    },
+    repairRecord(data){  //修改异常报表
+        return api.post('/api/eventManagerController/insertRepair',data)
+    },
+    abnormalType(){  //查询异常类型
+        return api.post('/api/eventManagerController/queryXflx')
+    },
+    weixinLogin(data){  //微信登陆
+        return api.post('/api/mxmxController/login',data)
+    }
+
 }

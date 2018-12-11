@@ -33,7 +33,8 @@
     import api from '../../service/data.js'
     import xunce from '../../service/xunce.js'
     import loading from '@/components/loading/loading'
-
+	import { mapGetters } from 'vuex'
+ 
 
     export default {
         data() {
@@ -54,6 +55,9 @@
             iptApen,
             loading
         },
+		computed:{
+			...mapGetters(['userInfo'])
+		},
         methods: {
             onScroll() {   //滚动监听
                 let scrollbox = document.querySelector('#scrollbox')
@@ -70,6 +74,7 @@
                 let data = {}
                 data.rwid = rwid
                 data.ddkzqIds = ddkzqIdArr.join(',')
+				data.czrbh = this.userInfo.userId
                 api.checkTime(data).then(function (result) {
                     xunce.setDataSend(result, 'dd', 'ds', _this.checkTimeCB)
                 })

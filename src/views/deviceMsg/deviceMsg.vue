@@ -48,7 +48,8 @@ import { Popup,MessageBox,Toast,Indicator } from 'mint-ui'
 import api from '../../service/data.js'
 import xunce from '../../service/xunce.js'
 import loading from '@/components/loading/loading'
-
+import { mapGetters } from "vuex"
+ 
 export default {
   data () {
     return {
@@ -70,6 +71,9 @@ export default {
       ddkzqIdArr:[], //巡测数组,
       loadingShow:false
     } 
+  },
+  computed:{
+    ...mapGetters([ 'userInfo' ])
   },
   components:{
     headTop,
@@ -95,6 +99,7 @@ export default {
       data.rwid = rwid
       data.ddkzqIds = ddkzqIdArr.join(',')
       data.kzlx = kzlx
+      data.czrbh = this.userInfo.userId
       api.lightSwitch(data).then(function(result){
         xunce.setDataSend(result,'dd',kzlx == 1?'kd':'gd',_this.lightCB)
       })
@@ -105,6 +110,7 @@ export default {
       let data = {}
       data.rwid = rwid
       data.ddkzqIds = ddkzqIdArr.join(',')
+      data.czrbh = this.userInfo.userId
       api.checkTime(data).then(function(result){
         xunce.setDataSend(result,'dd','ds',_this.checkTimeCB)
       })

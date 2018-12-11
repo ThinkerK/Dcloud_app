@@ -9,7 +9,7 @@
         <div class="scroll-box flex1" id="scrollbox">
             <div id="scrollcon">
                 <div class="con-list-sm padding">
-                    <light-cell v-for = "(item,index) in ycArr" :key="index" lfCon = "异常信息:" :mdCon = "item.ycxx" :rtCon = "item.ycsj"></light-cell>
+                    <light-cell v-for = "(item,index) in ycArr" :key="index" lfCon = "异常信息:" :mdCon = "item.yclxShow" :rtCon = "item.fssj"></light-cell>
                 </div>
             </div>
         </div>
@@ -20,6 +20,8 @@
 <script>
 import headTop from '@/components/header/mainHeader'
 import lightCell from '@/components/common/lightCell'
+import api from '@/service/data.js'
+
 
 export default {
     components:{
@@ -28,23 +30,36 @@ export default {
     },
     data () {
         return {
-            pole:{  
-                'dgmc':'石担路1002',
-                'yccs':15,
-                'ldbmc':'冰河世纪',
-                'ycxx':'功率异常',
-                'ycsj':'2018-10-10 19:23:22',
-                'yczt':'未修复'
-            },
+            pole:'', //灯杆信息
             ycArr:[{
                 'ycxx':'功率异常',
                 'ycsj':'2018-10-10 19:23:22',
             },{
                 'ycxx':'功率异常',
                 'ycsj':'2018-10-10 19:23:22',
-            }]
+            }],
+            dateRange:'' , // 时间范围 
         }
-    }
+    },
+    methods:{
+        queryAbnormalMsgDetail(){
+            let _this = this
+            let data = {}
+            data.kssj = this.dateRange.start
+            data.jssj = this.dateRange.end
+            data.ddkzqId = this.pole.ddkzqId
+            data.xfbz = ''
+            api.abnormalMsgDetail(data).then(function(res){
+                _this.ycArr = JSON.parse(res.data)
+                console.log(_this.ycArr)
+            })
+        }
+    },
+    mounted() {
+        this.dateRange = this.$route.query.dateRange
+        this.pole = this.$route.query.item
+        this.queryAbnormalMsgDetail()
+    },
 }
 </script>
 

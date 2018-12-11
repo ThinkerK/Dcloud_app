@@ -18,8 +18,6 @@
         data() {
             return {
                 font_size: '',
-                xData: ["10.24", "10.25", "10.26", "10.27", "10.28", "10.29", '10.30'],
-                yData: [5, 20, 36, 10, 10, 20, 5],
             }
         },
         props:['option'],
@@ -68,7 +66,7 @@
                 //                 fontSize: 0.36 * this.font_size
                 //             }
                 //         },
-                //         axisTick: {  //刻度线
+                //         axisTick: {  //刻度线    
                 //             show: false
                 //         }
                 //     },
@@ -138,6 +136,14 @@
             //     _this.chartDraw()
             // },1000)
         },
+        watch:{
+            option:{
+                handler (val, oldVal) {
+                    this.chartDraw()
+                },
+                deep:true
+            }
+        }
     }
 </script>
 

@@ -6,7 +6,7 @@ class mixin {
                 let font_size = parseFloat(getComputedStyle(window.document.documentElement)['font-size'])
 				return {
                     grid: {
-                        left: '10%',   //距离左边的距离
+                        left: '12%',   //距离左边的距离
                         right: '5%', //距离右边的距离
                         top: '18%' //距离上边的距离
                     },
@@ -16,9 +16,9 @@ class mixin {
                     // },
                     dataZoom: [{  //滚动条
                         type: 'inside',
-                        throttle:'0',
-                        startValue: 0,
-                        endValue: 6,
+                        throttle:0,
+                        // startValue: 0,
+                        // endValue: 6,
                     }],
                     title:{
                         text:'',
@@ -77,6 +77,8 @@ class mixin {
                         color: "#FF5B2E",
                         // symbol:'circel',      //拐点样式
                         symbolSize: 0.25 * this.font_size,//拐点大小
+                        showSymbol:'false',
+                        showAllSymbol:false,
                         itemStyle: {  //节点样式
                             normal: {
                                 lineStyle: {

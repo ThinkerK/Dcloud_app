@@ -19,7 +19,10 @@
                 webview.canBack(function(e) {
                     if(window.location.href.substring(window.location.href.length-4) == 'main'){
                 		e.canBack = false
-                	}
+                    }
+                    if(window.location.href.substring(window.location.href.length-1) == '/'){
+                        e.canBack = false
+                    }
                     if(e.canBack) {
                         webview.back();             
                     } else {
@@ -44,11 +47,11 @@
                     }
                 })
             });
-            var wgtVer=null;
-            plus.runtime.getProperty(plus.runtime.appid,function(inf){
-                wgtVer=inf.version;
-                console.log("当前应用版本："+wgtVer);
-            });
+            // var wgtVer=null;
+            // plus.runtime.getProperty(plus.runtime.appid,function(inf){
+            //     wgtVer=inf.version;
+            //     console.log("当前应用版本："+wgtVer);
+            // });
         });
       })()
     </script>

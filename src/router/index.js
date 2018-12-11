@@ -6,11 +6,12 @@ import main from '@/views/main/main.vue'
 Vue.use(Router)
 
 export default new Router({
-  routes: [{
-    path:'/test',
-    name:'test',
-    component:_import('test/chart')
-  },
+  routes: [
+// 		{
+//     path:'/test',
+//     name:'test',
+//     component:_import('test/chart')
+//   },
     {
     path:'/',
     name:'login',
@@ -169,19 +170,19 @@ export default new Router({
     component:_import('dataDisplay/dataDisplay')
   },
   {
-    path:'/f2charts',
-    name:'f2charts',
-    component:_import('F2Charts/F2Charts')
-  },
-  {
     path:'/highstock',
     name:'highstock',
     component:_import('test/highstock')
   },
+//   {
+//     path:'/echart',
+//     name:'echart',
+//     component:_import('test/echarts')
+//   },
   {
-    path:'/echart',
-    name:'echart',
-    component:_import('test/echarts')
+    path:'/chartenlarge',
+    name:'chartenlarge',
+    component:_import('dataDisplay/chartPage')
   },
 ]
 })

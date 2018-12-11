@@ -15,10 +15,10 @@
       </div>
       <div class="chart-list flex_between">
         <div class="count">
-            <progress-bar data="77" procolor="#FEE578">
+            <progress-bar :data="sCount/searchResult.length*100" procolor="#FEE578">
                 <div slot="titcon">
                     <div style="font-size: 0.48rem">
-                        355
+                        {{sCount}}
                     </div>
                     <div style="font-size: 0.32rem">
                        成功数
@@ -26,20 +26,20 @@
                 </div>
             </progress-bar>
         </div>
-        <div class="count"><progress-bar data="23" procolor="#2256E5">
+        <div class="count"><progress-bar data="fCount/searchResult.length*100" procolor="#2256E5">
             <div slot="titcon">
                 <div style="font-size: 0.48rem">
-                    32
+                    {{fCount}}
                 </div>
                 <div style="font-size: 0.32rem">
                    失败数
                 </div>
             </div>
         </progress-bar></div>
-        <div class="count"><progress-bar data="77" procolor="#169AFF">
+        <div class="count"><progress-bar :data="sCount/searchResult.length*100" procolor="#169AFF">
             <div slot="titcon">
                 <div style="font-size: 0.48rem">
-                    77%
+                    {{sCount/searchResult.length*100}}%
                 </div>
                 <div style="font-size: 0.32rem">
                    成功率
@@ -68,7 +68,6 @@
   import api from '../../service/data.js'
   import xunce from '../../service/xunce.js'
   import loading from '@/components/loading/loading'
-  import F2 from '@antv/f2'
 
 
   export default {
@@ -92,7 +91,7 @@
         }],//地址下拉链表
         lightState: 'off',
         xzqh: '',//行政区号
-        searchResult: '',//
+        searchResult: [0],//
         loadingShow: false,
         ddkzqIdArr: [],
         sCount:0,   //成功数
@@ -135,6 +134,7 @@
         this.loadingShow = true
         let _this = this
         let data = {}
+        data.czrbh = this.userInfo.userId
         data.rwid = rwid
         data.ddkzqIds = ddkzqIdArr.join(',')
         data.kzlx = kzlx
@@ -167,7 +167,7 @@
           } else {
             clearInterval(_this.forRequest)
             _this.loadingShow = false
-            _this.fCount = _this.fCount = _this.ddkzqIdArr.length - _this.zhaoceData.length
+            _this.fCount =  _this.ddkzqIdArr.length - _this.zhaoceData.length
           }
         }, 1000)
       },

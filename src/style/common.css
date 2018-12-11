@@ -245,3 +245,11 @@ input::-webkit-input-placeholder {
   color: white;
   padding: 0.1rem 0;
 }
+
+.position_re {
+  position: relative;
+}
+
+.position_ab {
+  position: absolute;
+}

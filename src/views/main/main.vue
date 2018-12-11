@@ -11,7 +11,10 @@
     <div class="head-bg">
       <div class="head-wrap">
         <div class="head-pic"></div>
-        <div class="name">{{userInfo.userName}}</div>
+      </div>
+      <div class="name">
+        <span>{{userInfo.userName}}</span>&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;
+        <span @click="signOut">安全退出</span>
       </div>
     </div>
 
@@ -70,7 +73,7 @@
         }],//地址下拉链表
         sectionList: [{ 'name': '街道', 'icon': 'jiedao', 'link': 'singlelightmsg' }, { 'name': '台区', 'icon': 'taiqu', 'link': 'singlelightmsg' }, { 'name': '集中器', 'icon': 'jizhongqi', 'link': 'jzqmsg' }, { 'name': '交接箱', 'icon': 'jiaojiexiang', 'link': 'singlelightmsg' }, { 'name': '组别', 'icon': 'zubei', 'link': 'singlelightmsg' }, { 'name': '区县', 'icon': 'quxian', 'link': 'lightswitch' }],//搜索不同模块
         // sectionList2: [{ 'name': '异常数据', 'icon': 'yichang' }, { 'name': '修复记录', 'icon': 'xuifu' }, { 'name': '数据展示', 'icon': 'sjzs'}],
-        sectionList2: [{ 'name': '异常数据', 'icon': 'yichang', 'link': 'abnormaldata' }, { 'name': '修复记录', 'icon': 'xuifu','link': 'repairrecord'  }, { 'name': '数据展示', 'icon': 'sjzs','link':'datadisplay'}]
+        sectionList2: [{ 'name': '异常数据', 'icon': 'yichang', 'link': 'abnormaldata' }, { 'name': '修复记录', 'icon': 'xuifu', 'link': 'repairrecord' }, { 'name': '数据展示', 'icon': 'sjzs', 'link': 'datadisplay' }]
       }
     },
     computed: {
@@ -79,6 +82,11 @@
     methods: {
       ...mapActions(['getCityArr']),
       ...mapMutations(['SET_CITYINDEX', 'SET_QUINDEX', 'SET_QUNAME', 'SET_LUINDEX']),
+      signOut() {
+        this.$router.push('/')
+        localStorage.removeItem("name");
+        localStorage.removeItem("password");
+      },
       model(item) {  //跳到单灯链表页
         if (this.quName != '无权限') {
           if (item.link != null) {
@@ -94,7 +102,7 @@
           } else {
             Toast('暂不支持')
           }
-        }else{
+        } else {
           Toast('你没有任何权限')
         }
 
@@ -105,7 +113,7 @@
       },
       genderConfirm() { // 城市选择确定事件
         let values = this.$refs.genderPicker.getValues()
-        
+
         if (values[1] != null) {
           let qName = this.$refs.genderPicker.getValues()[1].xzqhmc.substring(0, 3);
           let cIndex = this.cityArr.indexOf(values[0])
@@ -159,7 +167,7 @@
           _this.areaSlot[2].values = JSON.parse(res.qu)
           _this.areaSlot[2].defaultIndex = _this.quIndex
           _this.quName = JSON.parse(res.qu)[_this.quIndex].xzqhmc.substring(0, 3)
-          _this.xzqh = res.qu[0].xzqh
+          _this.xzqh = JSON.parse(res.qu)[0].xzqh
         })
       } else {  //store 存在   直接赋值
         this.areaSlot[2].values = this.cityArr[this.cityIndex].qu
@@ -196,9 +204,18 @@
 
   .head-wrap {
     @include wh(1.55rem, auto) @include cl() top: 2.22rem;
-    .name {
-      @include sc(0.42rem, #fff) margin-top: 0.3rem;
-      text-align: center
+
+  }
+
+  .name {
+    position: absolute;
+    width: 100%;
+    @include cl() top: 3.7rem;
+    @include sc(0.48rem, #fff) margin-top: 0.3rem;
+    text-align: center;
+    span {
+      display: inline-block;
+      min-width: 2.5rem;
     }
   }
 

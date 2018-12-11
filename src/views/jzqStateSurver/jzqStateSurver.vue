@@ -80,6 +80,7 @@
     import api from '../../service/data.js'
     import xunce from '../../service/xunce.js'
     import loading from '@/components/loading/loading'
+    import { mapGetters } from 'vuex' 
 
 
     export default {
@@ -115,6 +116,9 @@
                 }
             }
         },
+        computed:{
+            ...mapGetters([ 'userInfo' ])
+        },
         components: {
             headTop,
             lightCell,
@@ -134,6 +138,7 @@
             callTestFun(rwid, ddkzqIdArr) {  //巡测
                 let _this = this
                 let data = {}
+                data.czrbh = this.userInfo.userId
                 data.rwid = rwid
                 data.jzkzqIds = ddkzqIdArr.join(',')
                 api.jzqCallTest(data).then(function (result) {

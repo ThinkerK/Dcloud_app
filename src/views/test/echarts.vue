@@ -10,14 +10,14 @@
             <e-chart :option="barstack"></e-chart>
         </div>
         <div class="progress_bar">
-            <progress-bar data = "10" procolor = "#169AFF">
+            <progress-bar data="10" procolor="#169AFF">
                 <div slot="tit">
                     123
                 </div>
             </progress-bar>
         </div>
         <div class="progress_bar">
-            <progress-bar data = "20" procolor = "#169Add"></progress-bar>
+            <progress-bar data="20" procolor="#169Add"></progress-bar>
         </div>
     </div>
 </template>
@@ -136,33 +136,38 @@
                         }
                     },
                     series: [{
-                            name: '异常数',
-                            type: 'bar',
-                            color: "#999999",
-                            barWidth: this.rem(0.3),
-                            barGap: '-100%',
-                            data: [5, 20, 36, 10, 10, 20, 5, 5, 20, 36, 10, 10, 20, 5],
-                            // data: [5, 20],
-                            label: {
-                                normal: {
-                                    color: '#FEE578'
-                                }
+                        name: '已修复',
+                        type: 'bar',
+                        color: "#FEE578",
+                        stack: "异常",
+                        barWidth: this.rem(0.3),
+                        data: [2, 12, 20, 6, 7, 18, 3, 4, 18, 22, 1, 6, 12, 3],
+                        // data: [5, 20],
+                        label: {
+                            normal: {
+                                show:false
+                            }
+                        }
+                    }, {
+                        name: '异常数',
+                        type: 'bar',
+                        color: "#999999",
+                        barWidth: this.rem(0.3),
+                        // barGap: '-100%',
+                        stack: "异常",
+                        data: [5, 20, 36, 10, 10, 20, 5, 5, 20, 36, 10, 10, 20, 5],
+                        // data: [5, 20],
+                        label: {
+                            normal: {
+                                show: true,
+                                position: 'top',
+                                color: 'white',
+                                fontSize: this.rem(0.36)
                             }
                         },
-                        {
-                            name: '已修复',
-                            type: 'bar',
-                            color: "#FEE578",
-                            barWidth: this.rem(0.3),
-                            data: [2, 12, 20, 6, 7, 18, 3, 4, 18, 22, 1, 6, 12, 3],
-                            // data: [5, 20],
-                            label: {
-                                normal: {
-                                    color: '#FC2D8A'
-                                }
-                            }
-                        },
-                        
+                    },
+
+
 
                     ]
                 }

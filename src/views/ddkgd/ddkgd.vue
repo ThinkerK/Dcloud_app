@@ -32,6 +32,7 @@
     import api from '../../service/data.js'
     import xunce from '../../service/xunce.js'
     import loading from '@/components/loading/loading'
+    import { mapGetters } from 'vuex'
 
 
     export default {
@@ -54,6 +55,9 @@
             iptApen,
             loading
         },
+        computed:{
+        ...mapGetters([ 'userInfo' ])  
+        },
         methods: {
             onScroll() {   //滚动监听
                 let scrollbox = document.querySelector('#scrollbox')
@@ -68,9 +72,11 @@
                 this.loadingShow = true
                 let _this = this
                 let data = {}
+                data.czrbh = this.userInfo.userId
                 data.rwid = rwid
                 data.ddkzqIds = ddkzqIdArr.join(',')
                 data.kzlx = kzlx
+                console.log(data)
                 api.lightSwitch(data).then(function (result) {
                     xunce.setDataSend(result, 'dd', kzlx == 1 ? 'kd' : 'gd', _this.lightCB)
                 })

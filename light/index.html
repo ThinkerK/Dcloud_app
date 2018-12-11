@@ -1,11 +1,14 @@
-<!DOCTYPE html><html><head><meta charset=utf-8><meta name=viewport content="width=device-width,initial-scale=1"><title>ipole_lighting_origin</title><script type=text/javascript src=static/RSA.js></script><script type=text/javascript src=static/BigInt.js></script><script type=text/javascript src=static/Barrett.js></script><link href=./static/css/app.34caf101c774be635d715916a8663e0f.css rel=stylesheet></head><body><div id=app></div><script>(function(){
+<!DOCTYPE html><html><head><meta charset=utf-8><meta name=viewport content="width=device-width,initial-scale=1"><title>ipole_lighting_origin</title><script type=text/javascript src=static/RSA.js></script><script type=text/javascript src=static/BigInt.js></script><script type=text/javascript src=static/Barrett.js></script><link href=./static/css/app.7c78df2f09f58033e301c7f95b86eee6.css rel=stylesheet></head><body><div id=app></div><script>(function(){
             document.addEventListener('plusready', function() {
             var webview = plus.webview.currentWebview();
             plus.key.addEventListener('backbutton', function() {
                 webview.canBack(function(e) {
                     if(window.location.href.substring(window.location.href.length-4) == 'main'){
                 		e.canBack = false
-                	}
+                    }
+                    if(window.location.href.substring(window.location.href.length-1) == '/'){
+                        e.canBack = false
+                    }
                     if(e.canBack) {
                         webview.back();             
                     } else {
@@ -30,10 +33,10 @@
                     }
                 })
             });
-            var wgtVer=null;
-            plus.runtime.getProperty(plus.runtime.appid,function(inf){
-                wgtVer=inf.version;
-                console.log("当前应用版本："+wgtVer);
-            });
+            // var wgtVer=null;
+            // plus.runtime.getProperty(plus.runtime.appid,function(inf){
+            //     wgtVer=inf.version;
+            //     console.log("当前应用版本："+wgtVer);
+            // });
         });
-      })()</script><script type=text/javascript src=./static/js/manifest.3ad1d5771e9b13dbdad2.js></script><script type=text/javascript src=./static/js/vendor.3c0e58098dc2d6938b16.js></script><script type=text/javascript src=./static/js/app.8f059cc1c02048c73278.js></script></body></html>
+      })()</script><script type=text/javascript src=./static/js/manifest.3ad1d5771e9b13dbdad2.js></script><script type=text/javascript src=./static/js/vendor.84e4ae87bae528711070.js></script><script type=text/javascript src=./static/js/app.6ccf1414214c997feaf3.js></script></body></html>

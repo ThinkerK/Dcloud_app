@@ -76,6 +76,7 @@
     import api from '../../service/data.js'
     import xunce from '../../service/xunce.js'
     import loading from '@/components/loading/loading'
+    import { mapGetters } from 'vuex'
 
     export default {
         data() {
@@ -110,6 +111,9 @@
             iptApen,
             loading
         },
+        computed:{
+            ...mapGetters([ 'userInfo' ])
+        },
         methods: {
             setPoleMsg(pole) {  //获取灯杆信息
                 this.msgList[0].con = pole.dgmc
@@ -119,6 +123,7 @@
                 this.loadingShow = true
                 let _this = this
                 let data = {}
+                data.czrbh = this.userInfo.userId
                 data.jzkzqIds = ddkzqIdArr.join(',')
                 api.jzqCallTest(data).then(function (result) {
                     xunce.jzqDataSend(result, 'jzq', 'xc', _this.zcCallBack)

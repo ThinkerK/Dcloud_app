@@ -15,7 +15,7 @@
                 <div id="scrollcon">
                     <div class="con-list-sm padding" v-for="(item,index) in poleArr" v-if="index<showIndex" :key="index">
                         <light-cell :lfCon="item.dgmc"></light-cell>
-                        <light-cell msgIcon="true" lfCon="时间" :mdCon="item.zxsj" :zcCon="item.txjg"></light-cell>
+                        <light-cell msgIcon="true" lfCon="时间" :mdCon="item.ddsj" :zcCon="item.txjg"></light-cell>
                     </div>
                 </div>
             </div>
@@ -32,6 +32,7 @@
     import api from '../../service/data.js'
     import xunce from '../../service/xunce.js'
     import loading from '@/components/loading/loading'
+    import { mapGetters } from 'vuex'
 
 
     export default {
@@ -47,6 +48,9 @@
                 loadingShow: 'false',
                 showIndex: 10, //懒加载初始值
             }
+        },
+        computed:{
+            ...mapGetters([ 'userInfo' ])   
         },
         components: {
             headTop,
@@ -70,6 +74,8 @@
                 let data = {}
                 data.rwid = rwid
                 data.ddkzqIds = ddkzqIdArr.join(',')
+                data.czrbh = this.userInfo.userId
+                console.log(data)
                 api.callTest(data).then(function (result) {
                     xunce.setDataSend(result, 'dd', 'xc', _this.zcCallBack)
                 })

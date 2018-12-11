@@ -27,7 +27,7 @@ export default {
     return {
         nowIndex:0, // tab 高亮下标
         dateFlag:false, //控制日期选择的显示隐藏
-        datevalue:dateFormat(new Date()), //当前时间
+        datevalue:'', //当前时间
         tablist:[{'name':'最近七天','date':dateFormat(getBeforSeven())},{'name':'本月','date':dateFormat(getFirstDayOfMonth())},{'name':'本年','date':dateFormat(getFirstDayOfYear())}],
     }
   },
@@ -37,7 +37,11 @@ export default {
     },
     tabClick(index,item){ //tab 切换
         this.nowIndex = index;
-        this.$emit('timeRange',item.date)
+        if(index == 3){
+            this.$emit('timeRange',{"show":item.date,"hid":{"start":item.date,'end':item.date}})
+        }else{
+            this.$emit('timeRange',{"show":item.date+" -- "+dateFormat(this.datevalue),'hid':{'start':item.date,'end':dateFormat(this.datevalue)}})
+        }
     },
     dateChange(value){  //日期确定
         let item = {
@@ -47,8 +51,11 @@ export default {
     }
   },
   created() {
-      this.$emit('timeRange',this.tablist[0].date)
+      this.datevalue = dateFormat(new Date())
+      this.$emit('timeRange',{'show':this.tablist[0].date+" -- "+this.datevalue,'hid':{'start':this.tablist[0].date,'end':this.datevalue}})
   },
+  watch:{
+  }
 }
 </script>
 

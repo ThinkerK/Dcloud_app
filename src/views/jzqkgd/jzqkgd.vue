@@ -32,6 +32,7 @@
     import api from '../../service/data.js'
     import xunce from '../../service/xunce.js'
     import loading from '@/components/loading/loading'
+    import { mapGetters } from 'vuex'
 
 
     export default {
@@ -54,6 +55,9 @@
             iptApen,
             loading
         },
+        computed:{
+            ...mapGetters([ 'userInfo' ])
+        },
         methods: {
             onScroll() {   //滚动监听
                 let scrollbox = document.querySelector('#scrollbox')
@@ -68,6 +72,7 @@
                 this.loadingShow = true
                 let _this = this
                 let data = {}
+                data.czrbh = this.userInfo.userId
                 data.jzkzqIds = ddkzqIdArr.join(',')
                 data.kzlx = kzlx
                 api.jzqCallTest(data).then(function (result) {

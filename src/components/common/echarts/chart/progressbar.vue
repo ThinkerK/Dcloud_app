@@ -108,10 +108,9 @@
             // },1000)
         },
         watch: {
-            // path(){
-            //     console.log(1)
-            //     this.chartDraw()
-            // }
+            data(){
+                this.chartDraw()
+            }
         }
     }
 </script>
@@ -130,7 +129,7 @@
         right: 0;
         bottom: 0;
         margin: auto;
-        width: 50%;
+        width: 100%;
         height: 50%;
         color: white;
         padding-top: 3%;
