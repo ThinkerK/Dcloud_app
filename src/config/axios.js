@@ -6,10 +6,6 @@ import { Indicator,Toast } from 'mint-ui'
 
 axios.defaults.headers.post['Content-Type'] = 'application/x-www-form-urlencoded;charset=UTF-8'; 
 const service = axios.create({
-    // baseURL: process.env.API_HOST,  
-    baseURL:'http://47.94.243.47:8102', //正式库
-    // baseURL: 'http://122.113.5.204:9023',  //测试库
-    // baseURL: 'http://122.113.5.31:8080',  //本地库
     timeout: 10000,
     transformRequest: [function (data) {  
         return Qs.stringify(data)
