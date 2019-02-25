@@ -9,6 +9,7 @@ module.exports = {
     assetsSubDirectory: 'static',
     assetsPublicPath: '/',
     proxyTable: {
+      //   changeOrigin: true,
       '/api': {
         // target: 'http://122.113.5.4:8080',    //本地库 
         target: 'http://47.94.243.47:8102',  //正式库
