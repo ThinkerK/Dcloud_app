@@ -9,6 +9,7 @@ import MintUI from 'mint-ui'
 import 'mint-ui/lib/style.css'
 
 import components from './components/common'
+import '@/interceptors/permission'   //拦截
 // 引入
 
 import FastClick from 'fastclick'

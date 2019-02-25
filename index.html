@@ -1,60 +1,62 @@
 <!DOCTYPE html>
 <html>
-  <head>
+
+<head>
     <meta charset="utf-8">
+    <meta http-equiv="cache-control" content="no-cache,no-store, must-revalidate" />
+    <meta http-equiv="pragma" content="no-cache" />
+    <meta http-equiv="Expires" content="0" />
     <meta name="viewport" content="width=device-width,initial-scale=1.0">
     <title>ipole_lighting_origin</title>
     <script type="text/javascript" src="static/RSA.js"></script>
     <script type="text/javascript" src="static/BigInt.js"></script>
     <script type="text/javascript" src="static/Barrett.js"></script>
-  </head>
-  <body>
+    <script type="text/javascript" src="http://api.map.baidu.com/api?v=2.0&ak=HbUVYMUg6PwbOnXkztdgSQlQ"></script>
+</head>
+
+<body>
     <div id="app"></div>
     <!-- built files will be auto injected -->
     <script>
-    	(function(){
-            document.addEventListener('plusready', function() {
-            var webview = plus.webview.currentWebview();
-            plus.key.addEventListener('backbutton', function() {
-                webview.canBack(function(e) {
-                    if(window.location.href.substring(window.location.href.length-4) == 'main'){
-                		e.canBack = false
-                    }
-                    if(window.location.href.substring(window.location.href.length-1) == '/'){
-                        e.canBack = false
-                    }
-                    if(e.canBack) {
-                        webview.back();             
-                    } else {
-                        //webview.close(); //hide,quit
-                        //plus.runtime.quit();
-                        //首页返回键处理
-                        //处理逻辑：1秒内，连续两次按返回键，则退出应用；
-                        var first = null;
-                        plus.key.addEventListener('backbutton', function() {
-                            //首次按键，提示‘再按一次退出应用’
-                            if (!first) {
-                                first = new Date().getTime();
-                                setTimeout(function() {
-                                    first = null;
-                                }, 1500);
-                            } else {
-                                if (new Date().getTime() - first < 1500) {
-                                    plus.runtime.quit();
-                                }
-                            }
-                        }, false);
-                    }
-                })
-            });
-            // var wgtVer=null;
-            // plus.runtime.getProperty(plus.runtime.appid,function(inf){
-            //     wgtVer=inf.version;
-            //     console.log("当前应用版本："+wgtVer);
-            // });
-        });
-      })()
+        // (function () {
+        //     document.addEventListener('plusready', function () {
+        //         var webview = plus.webview.currentWebview();
+        //         plus.key.addEventListener('backbutton', function () {
+        //             webview.canBack(function (e) {
+        //                 if (window.location.href.substring(window.location.href.length - 4) == 'main') {
+        //                     e.canBack = false
+        //                 }
+        //                 if (window.location.href.substring(window.location.href.length - 1) == '/') {
+        //                     e.canBack = false
+        //                 }
+        //                 if (e.canBack) {
+        //                     webview.back();
+        //                 } else {
+        //                     //webview.close(); //hide,quit
+        //                     //plus.runtime.quit();
+        //                     //首页返回键处理
+        //                     //处理逻辑：1秒内，连续两次按返回键，则退出应用；
+        //                     var first = null;
+        //                     plus.key.addEventListener('backbutton', function () {
+        //                         //首次按键，提示‘再按一次退出应用’
+        //                         if (!first) {
+        //                             first = new Date().getTime();
+        //                             setTimeout(function () {
+        //                                 first = null;
+        //                             }, 1500);
+        //                         } else {
+        //                             if (new Date().getTime() - first < 1500) {
+        //                                 plus.runtime.quit();
+        //                             }
+        //                         }
+        //                     }, false);
+        //                 }
+        //             })
+        //         });
+        //     });
+        // })()
     </script>
 
-  </body>
+</body>
+
 </html>

@@ -1,6 +1,6 @@
 <template>
   <div class="main">
-    <head-top scanBtn='true' style="background: none">
+    <head-top scanBtn='true' :class="{'main-header':headerBg}">
       <div slot="address" class="select-area flex_between" @click="popupVisible = true">{{quName}}
         <i class="xiala"></i>
       </div>
@@ -44,6 +44,9 @@
 </template>
 
 <script>
+  import {
+	removeToken
+} from '@/utils/common'
   import api from '../../service/data.js'
   import { Toast, Popup, Picker } from 'mint-ui'
   import headTop from '@/components/header/mainHeader'
@@ -52,6 +55,7 @@
   export default {
     data() {
       return {
+        headerBg:true,
         quName: '无权限',
         xzqh: '',//行政区划
         cityId: '', // 城市ID 1101 1201
@@ -73,7 +77,7 @@
         }],//地址下拉链表
         sectionList: [{ 'name': '街道', 'icon': 'jiedao', 'link': 'singlelightmsg' }, { 'name': '台区', 'icon': 'taiqu', 'link': 'singlelightmsg' }, { 'name': '集中器', 'icon': 'jizhongqi', 'link': 'jzqmsg' }, { 'name': '交接箱', 'icon': 'jiaojiexiang', 'link': 'singlelightmsg' }, { 'name': '组别', 'icon': 'zubei', 'link': 'singlelightmsg' }, { 'name': '区县', 'icon': 'quxian', 'link': 'lightswitch' }],//搜索不同模块
         // sectionList2: [{ 'name': '异常数据', 'icon': 'yichang' }, { 'name': '修复记录', 'icon': 'xuifu' }, { 'name': '数据展示', 'icon': 'sjzs'}],
-        sectionList2: [{ 'name': '异常数据', 'icon': 'yichang', 'link': 'abnormaldata' }, { 'name': '修复记录', 'icon': 'xuifu', 'link': 'repairrecord' }, { 'name': '数据展示', 'icon': 'sjzs', 'link': 'datadisplay' }]
+        sectionList2: [{ 'name': '异常数据', 'icon': 'yichang', 'link': 'abnormaldata' }, { 'name': '修复记录', 'icon': 'xuifu', 'link': 'repairrecord' }, { 'name': '数据展示', 'icon': 'sjzs', 'link': 'datadisplay' },{'name': 'GIS','icon': 'quxian','link': 'gis'}]
       }
     },
     computed: {
@@ -83,7 +87,9 @@
       ...mapActions(['getCityArr']),
       ...mapMutations(['SET_CITYINDEX', 'SET_QUINDEX', 'SET_QUNAME', 'SET_LUINDEX']),
       signOut() {
-        this.$router.push('/')
+        sessionStorage.clear();
+				removeToken();
+        this.$router.push('/login')
         localStorage.removeItem("name");
         localStorage.removeItem("password");
       },
@@ -135,6 +141,14 @@
         if (index != -1) {
           picker.setSlotValues(1, this.cityArr[index].qu)
         }
+      },
+      handleScroll() {
+        let scrollTop = window.pageYOffset || document.documentElement.scrollTop || document.body.scrollTop
+        if(scrollTop>88){
+            this.headerBg = false
+        }else {
+          this.headerBg = true
+        }
       }
     },
     components: {
@@ -156,6 +170,7 @@
         this.getCityArr(city2)
     },
     mounted() {
+      window.addEventListener('scroll', this.handleScroll)
       let _this = this
       if (this.cityArr[0].qu.length == 0) { //判断  如果没有store 请求获取 区的列表
         let _this = this
@@ -305,5 +320,9 @@
 
   .pdgbtm {
     padding-bottom: 1rem;
+  }
+
+  .main-header {
+    background: none !important;
   }
 </style>

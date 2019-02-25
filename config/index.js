@@ -9,21 +9,29 @@ module.exports = {
     assetsSubDirectory: 'static',
     assetsPublicPath: '/',
     proxyTable: {
-      // '/api': {
-      //   target: 'http://47.94.243.47:8102',  //正式库
-      //   // target: 'http://122.113.5.31:8080',  //测试库
-      
-      //   changeOrigin: true,
-      //   pathRewrite: {
-      //     '^/api': '/api'
-      //   }
-      // }
+      '/api': {
+        // target: 'http://122.113.5.4:8080',    //本地库 
+        target: 'http://47.94.243.47:8102',  //正式库
+        // target: 'http://122.113.5.204:9023',  //测试库
+        changeOrigin: true,
+        pathRewrite: {
+          '^/api': '/api'
+        }
+      },
+      '/portal': {
+        // target: 'http://122.113.5.204:9007',  //正式库
+        target: 'http://app.ipolecity.com.cn',  //测试库
+        changeOrigin: true,
+        pathRewrite: {
+          '^/portal': '/api'
+        }
+      },
     },
 
 
     // Various Dev Server settings
     host: 'localhost', // can be overwritten by process.env.HOST
-    port: 7000, // can be overwritten by process.env.PORT, if port is in use, a free one will be determined
+    port: 7666, // can be overwritten by process.env.PORT, if port is in use, a free one will be determined
     autoOpenBrowser: false,
     errorOverlay: true,
     notifyOnErrors: true,

@@ -19,6 +19,7 @@
   </div>
 </template>
 <script>
+  import { passwordEncode,getToken, setToken, removeToken } from '@/utils/common.js'
   import { Checklist, Toast } from 'mint-ui'
   import { mapActions } from 'vuex'
 
@@ -45,7 +46,7 @@
         data.loginType = 9
         data.wechatId = this.wechatId
 
-        if (this.formData.name != '' && this.formData.pwd != '') {
+        if (this.formData.name != '' && this.formData.password != '') {
           this.wechatLogin(this.wechatId).then(function (res) {
             if (res) {
               _this.$router.push({
@@ -58,7 +59,6 @@
         } else {
           Toast('账号或密码不能为空！')
         }
-
       },
 			webindOut(e){
 				e.preventDefault()
@@ -69,7 +69,7 @@
       handleLogin(e) {
         e.preventDefault()   //阻表单默认提交
         let _this = this
-        if (this.formData.name != '' && this.formData.pwd != '') {
+        if (this.formData.name != '' && this.formData.password != '') {
           if (this.portSelect.length != 0) {
             localStorage.setItem("name", this.formData.name);
             localStorage.setItem("password", this.formData.password);
@@ -77,7 +77,7 @@
           this.login(this.formData).then(function (res) {
             if (res) {
               _this.$router.push({
-                path: '/main'
+                path: '/'
               })
             } else {
               Toast('账号或密码有误！')

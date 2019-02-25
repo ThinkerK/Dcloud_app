@@ -13,12 +13,12 @@ export default new Router({
 //     component:_import('test/chart')
 //   },
     {
-    path:'/',
+    path:'/login',
     name:'login',
     meta:{index:0},
     component:_import('login/login')
   },{
-    path:'/main',
+    path:'/',
     name:'main',
     meta:{index:1},
     component: _import('main/main'),
@@ -173,6 +173,11 @@ export default new Router({
     path:'/highstock',
     name:'highstock',
     component:_import('test/highstock')
+  },
+  {
+    path:'/gis',
+    name:'gis',
+    component:_import('gis/gis')
   },
 //   {
 //     path:'/echart',
